@@ -12,7 +12,7 @@ namespace Persistence
             {
                 var user = new AppUser
                 {
-                    UserName = "test@test.com",
+                    UserName = "Test",
                     Surname = "Иванов",
                     Name = "Иван",
                     Patronymic = "Иванович",
