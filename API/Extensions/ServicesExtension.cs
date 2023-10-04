@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using API.Services;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace API.Extensions
@@ -26,6 +27,8 @@ namespace API.Extensions
                         .WithOrigins("http://localhost:3000");
                 });
             });
+
+            services.AddScoped<TokenService>();
 
             return services;
         }
