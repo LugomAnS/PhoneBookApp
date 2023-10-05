@@ -1,8 +1,8 @@
 import { makeAutoObservable, reaction } from "mobx";
 
 export default class CommonStore {
-  token: string | null | undefined = localStorage.getItem('jwt');
-  appLoading = false;
+  token: string | null | undefined = localStorage.getItem('phonebook-jwt');
+  appLoaded = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -11,14 +11,18 @@ export default class CommonStore {
       () => this.token,
       token => {
         if (token) {
-          localStorage.setItem('jwt', token);
+          localStorage.setItem('phonebook-jwt', token);
         } else {
-          localStorage.removeItem('jwt');
+          localStorage.removeItem('phonebook-jwt');
         }
       });
   }
 
   setToken = (token: string | null) => {
     this.token = token;
+  }
+
+  setAppLoaded = () => {
+    this.appLoaded = true;
   }
 }

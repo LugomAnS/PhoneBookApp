@@ -1,6 +1,7 @@
 import axios, {AxiosError, AxiosResponse} from "axios";
 import { User, UserForm } from "../models/user";
 import { store } from "../stores/store";
+import { ServerErrorMessage } from "../models/errorMesage";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -26,20 +27,29 @@ axios.interceptors.response.use(async responce => {
   if(config.method === 'get' && Object.prototype.hasOwnProperty.call(data.errors, 'id')) {
     alert('/not-found');
   }
-  const stateErrors = [];
+  const stateErrors: ServerErrorMessage[] = [];
   switch (status) {
     case 400:
-      if(data.error) {
-        for(const key in data.error) {
-          stateErrors.push(data.error[key])
+      if(data.errors) {
+        for(const key in data.errors) {
+          const error: ServerErrorMessage = {
+            field: key,
+            message: data.errors[key]
+          }
+          stateErrors.push(error);
         }
       } else {
         for(const key in data) {
-          stateErrors.push(data[key]);
+          const {code, description} = data[key];
+          const error: ServerErrorMessage = {
+            field: code,
+            message: description
+          }
+          stateErrors.push(error);
         }
       }
       if(stateErrors.length > 0) {
-        throw stateErrors.flat();
+        throw stateErrors;
       }
       break;
     default:

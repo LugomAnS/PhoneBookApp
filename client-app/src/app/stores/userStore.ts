@@ -28,6 +28,7 @@ export default class UserStore {
       runInAction(() => this.user = result);
     } catch (error) {
       console.log(error);
+      throw(error);
     } finally {
       runInAction(() => this.loading = false);
     }
@@ -53,6 +54,7 @@ export default class UserStore {
       runInAction(() => this.user = result);
     } catch (error) {
       console.log(error);
+      throw(error);
     } finally {
       runInAction(() => this.loading = false);
     }
