@@ -17,7 +17,7 @@ export default observer(function RegistryForm() {
     surname: Yup.string().required("Фамилия обязательна"),
     name: Yup.string(),
     patronymic: Yup.string(),
-    password: Yup.string().min(1).matches(passwordSchema, 'Пароль не достаточно сложный').required("Введите пароль"),
+    password: Yup.string().min(6).matches(passwordSchema, 'Пароль не достаточно сложный').required("Введите пароль"),
     confirmPassword: Yup.string().oneOf([Yup.ref('password'), undefined], 'Пароли должны совпадать').required('Поторите ввод пароля')
   })
   return (
@@ -25,9 +25,12 @@ export default observer(function RegistryForm() {
       initialValues={{email: "", username: "", surname: "", name: "", patronymic: "",
                       password: "", confirmPassword: "", serverErrors}}
       validationSchema={schema}
-      onSubmit={(values) => userStore.registry(values).catch((error) => {
+      onSubmit={(values, {setFieldError}) => userStore.registry(values).catch((error) => {
         setServerErrors(error);
-      } )}
+        error.forEach(({field, message}: ServerErrorMessage) => {
+          setFieldError(field, message);
+        });
+      })}
     >
       {({handleSubmit, isSubmitting, isValid, dirty}) => (
         <Form

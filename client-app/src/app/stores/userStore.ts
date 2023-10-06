@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { User, UserForm } from "../models/user";
 import agent from "../api/agent";
 import { store } from "./store";
+import { router } from "../router/router";
 
 export default class UserStore {
   user: User | null = null;
@@ -26,6 +27,8 @@ export default class UserStore {
       const result = await agent.Account.login(params);
       store.commonStore.setToken(result.token);
       runInAction(() => this.user = result);
+      store.modalStore.closeModal();
+      router.navigate('contacts');
     } catch (error) {
       console.log(error);
       throw(error);
@@ -52,6 +55,8 @@ export default class UserStore {
       const result = await agent.Account.registry(params);
       store.commonStore.setToken(result.token);
       runInAction(() => this.user = result);
+      store.modalStore.closeModal();
+      router.navigate('contacts');
     } catch (error) {
       console.log(error);
       throw(error);
@@ -63,5 +68,6 @@ export default class UserStore {
   logout = () => {
     this.user = null;
     store.commonStore.setToken(null);
+    router.navigate('/');
   }
 }

@@ -3,6 +3,7 @@ import { Container, Header, Segment, Divider, List, Button } from "semantic-ui-r
 import { useStore } from "../../app/stores/store"
 import LoginForm from "../user/LoginForm";
 import RegistryForm from "../user/RegistryForm";
+import { router } from "../../app/router/router";
 
 export default observer(function HomePage() {
   const {userStore, modalStore} = useStore();
@@ -21,7 +22,7 @@ export default observer(function HomePage() {
         </List>
         <Divider />
         {userStore.isLogedIn ? (
-          <Button content='Перейти к контактам' onClick={() => userStore.logout()}/>
+          <Button content='Перейти к контактам' onClick={() => router.navigate('contacts')}/>
         ) : (
           <>
             <Button inverted color='green' content='Войти' onClick={() => modalStore.openModal(<LoginForm />)}/>
