@@ -2,6 +2,7 @@ import axios, {AxiosError, AxiosResponse} from "axios";
 import { User, UserForm } from "../models/user";
 import { store } from "../stores/store";
 import { ServerErrorMessage } from "../models/errorMesage";
+import { UserProfile } from "../models/userProfile";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -74,8 +75,13 @@ const Account = {
   getCurrent: () => request.get<User>('/account')
 }
 
+const Profile = {
+  getProfile: () => request.get<UserProfile>('/profile'),
+}
+
 const agent = {
-  Account
+  Account,
+  Profile
 }
 
 export default agent;

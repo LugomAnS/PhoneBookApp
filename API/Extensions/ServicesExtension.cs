@@ -1,4 +1,6 @@
 ﻿using API.Services;
+using Application.Core;
+using Application.User;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -29,6 +31,8 @@ namespace API.Extensions
             });
 
             services.AddScoped<TokenService>();
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
+            services.AddMediatR(cnf => cnf.RegisterServicesFromAssembly(typeof(CurrentProfile.Handler).Assembly));
 
             return services;
         }

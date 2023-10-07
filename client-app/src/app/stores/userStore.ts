@@ -68,6 +68,7 @@ export default class UserStore {
   logout = () => {
     this.user = null;
     store.commonStore.setToken(null);
+    store.profileStore.resetStore();
     router.navigate('/');
   }
 }
