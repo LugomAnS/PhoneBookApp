@@ -3,8 +3,10 @@ import App from "../layout/App";
 import AuthRequired from "./AuthRequired";
 import HomePage from "../../features/home/HomePage";
 import NotFound from "../../features/errors/NotFound";
-import ContactsDashboard from "../../features/contacts/ContactsDashboard";
-import ContactDetails from "../../features/contacts/ContactDetails";
+import ContactsDashboard from "../../features/contacts/dashboard/ContactsDashboard";
+import ContactDetails from "../../features/contacts/details/ContactDetails";
+import ContactIndexPage from "../../features/contacts/details/ContactIndexPage";
+import AddContactForm from "../../features/contacts/form/AddContactForm";
 
 export const routes: RouteObject[] = [
   {
@@ -17,7 +19,9 @@ export const routes: RouteObject[] = [
           { path: '', element: <HomePage /> },
           { path: 'contacts/*', element: <ContactsDashboard />,
             children: [
-              { path: ':id', element: <ContactDetails />}
+              { index: true, element: <ContactIndexPage />},
+              { path: ':id', element: <ContactDetails />},
+              { path: 'create', element: <AddContactForm />}
             ]
           }
         ]

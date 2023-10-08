@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
-import { useStore } from "../../app/stores/store";
+import { useStore } from "../../../app/stores/store";
 import { Button, Grid, Header, List, Segment } from "semantic-ui-react";
 import { useEffect } from "react";
-import LoadingComponent from "../../app/layout/LoadingComponent";
-import ContactListItem from "./ContactListItem";
-import { Outlet } from "react-router-dom";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import ContactListItem from "../details/ContactListItem";
+import { Link, Outlet } from "react-router-dom";
 
 export default observer(function ContactsDashboard() {
   const {profileStore} = useStore();
@@ -20,10 +20,11 @@ export default observer(function ContactsDashboard() {
     <Segment style={{borderRadius: '15px'}}>
       <Grid divided>
         <Grid.Column width={4}>
-          <Button
+          <Button as={Link} to='/contacts/create'
             primary
             fluid
             content="Добавить контакт"
+            icon='add'
           />
           {contacts.size > 0 ? (
             <List selection>

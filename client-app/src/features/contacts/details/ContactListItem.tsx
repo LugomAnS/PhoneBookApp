@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Contact } from "../../app/models/contact";
+import { Contact } from "../../../app/models/contact";
 import { Card, Image, List, Popup} from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
 

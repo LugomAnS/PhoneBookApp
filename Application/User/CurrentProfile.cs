@@ -10,13 +10,13 @@ namespace Application.User
 {
     public class CurrentProfile
     {
-        public class Query : IRequest<Result<UserProfile>>
+        public class Query : IRequest<Result<UserProfileDto>>
         {
             public string Email { get; set; }
 
         }
 
-        public class Handler : IRequestHandler<Query, Result<UserProfile>>
+        public class Handler : IRequestHandler<Query, Result<UserProfileDto>>
         {
             private readonly IMapper _mapper;
             private readonly UserManager<AppUser> _userManager;
@@ -26,16 +26,16 @@ namespace Application.User
                 _mapper = mapper;
                 _userManager = userManager;
             }
-            public async Task<Result<UserProfile>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<UserProfileDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var profile = await _userManager.Users
                     .Where(u => u.Email == request.Email)
-                    .ProjectTo<UserProfile>(_mapper.ConfigurationProvider)
+                    .ProjectTo<UserProfileDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(CancellationToken.None);
 
                 if (profile == null) return null;
 
-                return  Result<UserProfile>.Success(profile);
+                return  Result<UserProfileDto>.Success(profile);
             }
         }
     }

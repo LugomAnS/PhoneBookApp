@@ -3,6 +3,7 @@ import { User, UserForm } from "../models/user";
 import { store } from "../stores/store";
 import { ServerErrorMessage } from "../models/errorMesage";
 import { UserProfile } from "../models/userProfile";
+import { ContactDetails } from "../models/contact";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -21,7 +22,7 @@ axios.interceptors.request.use(config => {
 })
 
 axios.interceptors.response.use(async responce => {
-  sleep(1000);
+  await sleep(1000);
   return responce;
 }, (error: AxiosError) =>{
   const { data, status, config} = error.response as AxiosResponse;
@@ -79,9 +80,14 @@ const Profile = {
   getProfile: () => request.get<UserProfile>('/profile'),
 }
 
+const Contacts = {
+  getContactDetails: (id: string) => request.get<ContactDetails>(`/contacts/${id}`)
+}
+
 const agent = {
   Account,
-  Profile
+  Profile,
+  Contacts
 }
 
 export default agent;

@@ -1,9 +1,8 @@
 ﻿using Application.Contacts;
-using Domain;
 
 namespace Application.User
 {
-    public class UserProfile
+    public class UserProfileDto
     {
         public ICollection<ContactDto> Contacts { get; set; }
     }

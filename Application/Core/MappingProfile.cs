@@ -10,8 +10,9 @@ namespace Application.Core
         {
             CreateMap<Contact, ContactDto>();
 
-            CreateMap<AppUser, UserProfile>();
+            CreateMap<AppUser, UserProfileDto>();
 
+            CreateMap<Contact, ContactDetailsDto>();
         }
     }
 }
