@@ -1,6 +1,11 @@
 ﻿using API.Services;
+using Application.Contacts;
 using Application.Core;
+using Application.Interfaces;
 using Application.User;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -33,6 +38,10 @@ namespace API.Extensions
             services.AddScoped<TokenService>();
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
             services.AddMediatR(cnf => cnf.RegisterServicesFromAssembly(typeof(CurrentProfile.Handler).Assembly));
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<ContactValidator>();
 
             return services;
         }

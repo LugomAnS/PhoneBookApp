@@ -13,6 +13,8 @@ namespace Application.Core
             CreateMap<AppUser, UserProfileDto>();
 
             CreateMap<Contact, ContactDetailsDto>();
+
+            CreateMap<Contact, Contact>();
         }
     }
 }
