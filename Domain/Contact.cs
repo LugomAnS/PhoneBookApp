@@ -11,6 +11,6 @@
         public Address ContactAddress { get; set; }
         public ICollection<Phone> Phones { get; set; }
 
-
+        public AppUser Owner { get; set; }
     }
 }

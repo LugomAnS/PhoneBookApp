@@ -1,9 +1,9 @@
 import axios, {AxiosError, AxiosResponse} from "axios";
 import { User, UserForm } from "../models/user";
 import { store } from "../stores/store";
-import { ServerErrorMessage } from "../models/errorMesage";
+import { ServerErrorMessage } from "../models/errorMessage";
 import { UserProfile } from "../models/userProfile";
-import { ContactDetails } from "../models/contact";
+import { ContactDetails, ContactForm } from "../models/contact";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -81,7 +81,10 @@ const Profile = {
 }
 
 const Contacts = {
-  getContactDetails: (id: string) => request.get<ContactDetails>(`/contacts/${id}`)
+  getContactDetails: (id: string) => request.get<ContactDetails>(`/contacts/${id}`),
+  createContact: (contact: ContactForm) => request.post<void>('/contacts/create', contact),
+  editContact: (id: string, contact: ContactDetails) => request.put<void>(`/contacts/${id}`, contact),
+  deleteContact: (id: string) => request.del<void>(`/contacts/${id}`)
 }
 
 const agent = {

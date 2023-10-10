@@ -3,7 +3,22 @@ export interface Contact {
   surname: string;
   name: string;
   patronymic: string;
-  category: string;
+  category?: string;
+}
+
+export class ContactForm {
+  id?: string;
+  surname: string = '';
+  name: string | null = null;
+  patronymic: string | null = null;
+  category: string| null = null;
+  description: string | null = null;
+  contactAddress: ContactAddress | null = null;
+  phones: Phone[] | null = null;
+
+  constructor() {
+
+  }
 }
 
 export interface ContactAddress {

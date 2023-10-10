@@ -36,6 +36,10 @@ namespace Application.Contacts
 
                 var result = await _dataContext.SaveChangesAsync() > 0;
 
+                _dataContext.Contacts.Remove(contact);
+                
+                result = await _dataContext.SaveChangesAsync() > 0;
+
                 return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Ошибка при удалении контакта");
             }
         }

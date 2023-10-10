@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { Contact, ContactDetails } from "../models/contact";
+import { Contact, ContactDetails, ContactForm } from "../models/contact";
 import agent from "../api/agent";
 
 export class ProfileStore {
@@ -46,6 +46,43 @@ export class ProfileStore {
       console.log(error);
     } finally {
       runInAction(() => this.loadingDetails = false)
+    }
+  }
+
+  createContact = async (contact: ContactForm) => {
+    try {
+      await agent.Contacts.createContact(contact);
+      const newContact: Contact ={
+        id: contact.id!,
+        surname: contact.surname,
+        name: contact.name!,
+        patronymic: contact.patronymic!
+      }
+      this.setContact(newContact);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  editContact =async () => {
+    try {
+      await agent.Contacts.editContact(this.selectedContact!.id, this.selectedContact!);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  deleteContact = async () => {
+    try {
+      await agent.Contacts.deleteContact(this.selectedContact!.id);
+      runInAction(() => {
+        const id = this.selectedContact!.id;
+        this.selectedContact = null;
+        this.contacts.delete(id);
+      })
+    } catch (error) {
+      console.log(error);
+      throw(error);
     }
   }
 

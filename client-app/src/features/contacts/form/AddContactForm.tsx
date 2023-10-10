@@ -3,19 +3,28 @@ import { Button, Grid, Image} from "semantic-ui-react";
 import InputField from "../../../app/common/form/InputField";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
+import { useStore } from "../../../app/stores/store";
+import { v4 as uuid } from 'uuid';
+import { ContactForm } from "../../../app/models/contact";
+import { router } from "../../../app/router/router";
+
+
 
 export default function AddContactForm() {
+  const {profileStore: {createContact}} = useStore();
+  const contact = new ContactForm;
   const validationSchema = Yup.object({
     surname: Yup.string().required("Поле обязательно для ввода")
   })
 
-  function handleForm({name = '', surname = '', patronymic = ''}) {
-    console.log(name + surname + patronymic);
+  function handleForm(contact: ContactForm) {
+    contact.id = uuid();
+    createContact(contact).then(() => router.navigate(`/contacts/${contact.id}`));
   }
 
   return (
     <Formik
-      initialValues={{surname: '', name: '', patronymic: ''}}
+      initialValues={contact}
       onSubmit={values => handleForm(values)}
       validationSchema={validationSchema}
     >

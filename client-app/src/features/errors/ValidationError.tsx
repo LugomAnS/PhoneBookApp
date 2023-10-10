@@ -1,5 +1,5 @@
 import { Message } from "semantic-ui-react";
-import { ServerErrorMessage } from "../../app/models/errorMesage";
+import { ServerErrorMessage } from "../../app/models/errorMessage";
 
 interface Props {
   errors: ServerErrorMessage[];

@@ -12,7 +12,7 @@ export default observer(function ContactPhoneList({phones}: Props) {
       <Segment attached>
         <Label attached='top' content='Список номеров' />
           <List>
-            {phones ? (
+            {phones !== null && phones.length > 0 ? (
               phones.map(p => (
                 <List.Item key={p.id}>
                   <Grid verticalAlign="middle">

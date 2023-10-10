@@ -8,6 +8,7 @@
         public string House { get; set; }
         public string Flat { get; set; }
 
+        public Contact Owner { get; set; }
 
     }
 }

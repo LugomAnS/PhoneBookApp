@@ -40,7 +40,9 @@ namespace Application.Contacts
 
                 var contact = ContactCleaner.CleanContact(request.Contact);
 
-                user.Contacts.Add(contact);
+                contact.Owner = user;
+
+                _dataContext.Contacts.Add(contact);
 
                 var result = await _dataContext.SaveChangesAsync(CancellationToken.None) > 0;
 

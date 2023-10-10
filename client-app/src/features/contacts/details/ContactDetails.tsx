@@ -1,23 +1,41 @@
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button,Grid, Label, Popup, Segment} from "semantic-ui-react";
+import { Button,Grid, Header, Label, Popup, Segment} from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import ContactIndexPage from "./ContactIndexPage";
 import ContactHeader from "./ContactHeader";
 import ContactAddress from "./ContactAddress";
 import ContactPhonesList from "./ContactPhonesList";
+import { router } from "../../../app/router/router";
+import { ServerErrorMessage } from "../../../app/models/errorMessage";
 
 export default observer(function ContactDetails() {
-  const {profileStore: {selectedContact, loadContactDetails, loadingDetails}} = useStore();
+  const {profileStore: {selectedContact, loadContactDetails, loadingDetails, deleteContact}} = useStore();
   const {id} = useParams();
+  const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if(id) {
       loadContactDetails(id);
     }
   }, [loadContactDetails, id])
+
+  function handleDeleteContact() {
+    setDeleting(true);
+    deleteContact().catch((error) => {
+      if(error) {
+        error.array.forEach(({message}: ServerErrorMessage ) => {
+          setError(message);
+        });
+      }
+    }).then(() => {
+      setDeleting(false);
+      router.navigate('/contacts');
+    });
+  }
 
   if(loadingDetails) return <LoadingComponent content="Загрузка информации о контакте..."/>
   if(selectedContact == null) return <ContactIndexPage />
@@ -26,6 +44,9 @@ export default observer(function ContactDetails() {
     <>
       <Grid>
         <Grid.Row>
+            {error && (
+              <Header color="red" content={error} />
+            )}
             <ContactHeader contact={selectedContact!} />
           <Grid.Column width={1}>
             <Button.Group vertical floated='right'>
@@ -44,7 +65,10 @@ export default observer(function ContactDetails() {
               <Popup hoverable
                 position='left center'
                 trigger={
-                  <Button icon='trash' size="tiny" negative/>
+                  <Button icon='trash' size="tiny" negative
+                    loading={deleting}
+                    onClick={() => handleDeleteContact()}
+                  />
                 }
               ><p>Удалить контакт</p></Popup>
             </Button.Group>
@@ -54,7 +78,11 @@ export default observer(function ContactDetails() {
           <Grid.Column width={16}>
             <Segment attached>
               <Label attached="top" content="Описание" />
-              <p>{selectedContact?.description}</p>
+              {selectedContact?.description ? (
+                <p>{selectedContact.description}</p>
+              ) : (
+                <p style={{fontStyle: 'italic'}}>Описание не добавлено</p>
+              )}
             </Segment>
           </Grid.Column>
         </Grid.Row>
