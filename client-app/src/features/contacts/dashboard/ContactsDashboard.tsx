@@ -3,7 +3,7 @@ import { useStore } from "../../../app/stores/store";
 import { Button, Grid, Header, List, Segment } from "semantic-ui-react";
 import { useEffect } from "react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-import ContactListItem from "../details/ContactListItem";
+import ContactListItem from "./ContactListItem";
 import { Link, Outlet } from "react-router-dom";
 
 export default observer(function ContactsDashboard() {

@@ -29,7 +29,7 @@ namespace API.Controllers
         public async Task<ActionResult> EditContact(string id, Contact contact)
         {
             return HandleResult(await Mediator.Send(new ContactEdit.Command
-                { Id = Guid.Parse(id), Contact = contact }));
+                { Contact = contact }));
         }
     }
 }

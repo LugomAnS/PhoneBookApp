@@ -25,7 +25,9 @@ export default observer(function ContackListItem({contact}: Props) {
         </Card>
         }
       >
-        {contact.surname + " " + contact.name + " " + contact.patronymic}
+       <span>{contact.surname}</span>
+       <span>{contact.name !== null ? (" " + contact.name): ('')}</span>
+       <span>{contact.patronymic !== null ? (" " + contact.patronymic): ('')}</span>
       </Popup>
     </List.Item>
   )

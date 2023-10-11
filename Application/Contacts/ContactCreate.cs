@@ -38,11 +38,11 @@ namespace Application.Contacts
             {
                 var user = await _dataContext.Users.FirstOrDefaultAsync(u => u.Email == _userAccessor.GetUserEmail());
 
-                var contact = ContactCleaner.CleanContact(request.Contact);
+                request.Contact.CleanAllFields();
 
-                contact.Owner = user;
+                request.Contact.Owner = user;
 
-                _dataContext.Contacts.Add(contact);
+                _dataContext.Contacts.Add(request.Contact);
 
                 var result = await _dataContext.SaveChangesAsync(CancellationToken.None) > 0;
 

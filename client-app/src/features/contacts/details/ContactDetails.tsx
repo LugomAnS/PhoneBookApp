@@ -19,9 +19,10 @@ export default observer(function ContactDetails() {
 
   useEffect(() => {
     if(id) {
-      loadContactDetails(id);
+      if(id !== selectedContact?.id)
+        loadContactDetails(id);
     }
-  }, [loadContactDetails, id])
+  }, [loadContactDetails, id, selectedContact])
 
   function handleDeleteContact() {
     setDeleting(true);
@@ -32,7 +33,7 @@ export default observer(function ContactDetails() {
         });
       }
     }).then(() => {
-      setDeleting(false);
+    //  setDeleting(false);
       router.navigate('/contacts');
     });
   }
@@ -59,7 +60,9 @@ export default observer(function ContactDetails() {
               <Popup hoverable
                 position='left center'
                 trigger={
-                  <Button icon='edit' size="tiny" positive/>
+                  <Button icon='edit' size="tiny" positive
+                    as={Link} to={`/contacts/${selectedContact.id}/edit`}
+                  />
                 }
               ><p>Редактировать</p></Popup>
               <Popup hoverable

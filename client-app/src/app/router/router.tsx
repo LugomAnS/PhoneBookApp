@@ -6,7 +6,7 @@ import NotFound from "../../features/errors/NotFound";
 import ContactsDashboard from "../../features/contacts/dashboard/ContactsDashboard";
 import ContactDetails from "../../features/contacts/details/ContactDetails";
 import ContactIndexPage from "../../features/contacts/details/ContactIndexPage";
-import AddContactForm from "../../features/contacts/form/AddContactForm";
+import ContactForm from "../../features/contacts/form/ContactForm";
 
 export const routes: RouteObject[] = [
   {
@@ -21,7 +21,8 @@ export const routes: RouteObject[] = [
             children: [
               { index: true, element: <ContactIndexPage />},
               { path: ':id', element: <ContactDetails />},
-              { path: 'create', element: <AddContactForm />}
+              { path: 'create', element: <ContactForm key='create'/>},
+              { path: ':id/edit', element: <ContactForm key='edit'/>}
             ]
           }
         ]

@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { Contact, ContactDetails, ContactForm } from "../models/contact";
+import { Contact, ContactDetails, ContactFormValues } from "../models/contact";
 import agent from "../api/agent";
 
 export class ProfileStore {
@@ -49,7 +49,7 @@ export class ProfileStore {
     }
   }
 
-  createContact = async (contact: ContactForm) => {
+  createContact = async (contact: ContactFormValues) => {
     try {
       await agent.Contacts.createContact(contact);
       const newContact: Contact ={
@@ -64,9 +64,11 @@ export class ProfileStore {
     }
   }
 
-  editContact =async () => {
+  updateContact = async (contact: ContactFormValues) => {
     try {
-      await agent.Contacts.editContact(this.selectedContact!.id, this.selectedContact!);
+      await agent.Contacts.editContact(contact);
+      this.loadContactDetails(contact.id!);
+      this.setContact(this.selectedContact!);
     } catch (error) {
       console.log(error);
     }

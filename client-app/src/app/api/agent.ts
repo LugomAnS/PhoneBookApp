@@ -3,7 +3,7 @@ import { User, UserForm } from "../models/user";
 import { store } from "../stores/store";
 import { ServerErrorMessage } from "../models/errorMessage";
 import { UserProfile } from "../models/userProfile";
-import { ContactDetails, ContactForm } from "../models/contact";
+import { ContactDetails, ContactFormValues } from "../models/contact";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -82,8 +82,8 @@ const Profile = {
 
 const Contacts = {
   getContactDetails: (id: string) => request.get<ContactDetails>(`/contacts/${id}`),
-  createContact: (contact: ContactForm) => request.post<void>('/contacts/create', contact),
-  editContact: (id: string, contact: ContactDetails) => request.put<void>(`/contacts/${id}`, contact),
+  createContact: (contact: ContactFormValues) => request.post<void>('/contacts/create', contact),
+  editContact: (contact: ContactFormValues) => request.put<void>(`/contacts/${contact.id}`, contact),
   deleteContact: (id: string) => request.del<void>(`/contacts/${id}`)
 }
 
