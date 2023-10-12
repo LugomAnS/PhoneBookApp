@@ -15,6 +15,8 @@ namespace Application.Core
             CreateMap<Contact, ContactDetailsDto>();
 
             CreateMap<Contact, Contact>();
+
+            CreateMap<Phone, Phone>();
         }
     }
 }
