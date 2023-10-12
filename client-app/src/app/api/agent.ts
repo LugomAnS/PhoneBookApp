@@ -3,7 +3,7 @@ import { User, UserForm } from "../models/user";
 import { store } from "../stores/store";
 import { ServerErrorMessage } from "../models/errorMessage";
 import { UserProfile } from "../models/userProfile";
-import { ContactDetails, ContactFormValues } from "../models/contact";
+import { ContactDetails, ContactFormValues, Phone } from "../models/contact";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -87,10 +87,17 @@ const Contacts = {
   deleteContact: (id: string) => request.del<void>(`/contacts/${id}`)
 }
 
+const Phones = {
+  createPhone: (id: string, phone: Phone) => request.post<void>(`/phones/${id}`, phone),
+  updatePhone: (phone: Phone) => request.put<void>(`/phones/edit`, phone),
+  deletePhone: (id: string) => request.del<void>(`/phones/${id}`)
+}
+
 const agent = {
   Account,
   Profile,
-  Contacts
+  Contacts,
+  Phones
 }
 
 export default agent;

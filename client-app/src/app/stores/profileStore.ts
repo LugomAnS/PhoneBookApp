@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { Contact, ContactDetails, ContactFormValues } from "../models/contact";
+import { Contact, ContactDetails, ContactFormValues, Phone } from "../models/contact";
 import agent from "../api/agent";
+import { v4 as uuid} from 'uuid';
 
 export class ProfileStore {
   contacts = new Map<string, Contact>();
@@ -8,6 +9,8 @@ export class ProfileStore {
   loadingContacts = false;
   selectedContact: ContactDetails | null = null;
   loadingDetails = false;
+  loadingPhone = false;
+  addingPhone = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -19,6 +22,10 @@ export class ProfileStore {
 
   setContact = (contact: Contact) => {
     this.contacts.set(contact.id, contact);
+  }
+
+  setAddingPhone = () => {
+    this.addingPhone = !this.addingPhone;
   }
 
   loadProfile =async () => {
@@ -85,6 +92,51 @@ export class ProfileStore {
     } catch (error) {
       console.log(error);
       throw(error);
+    }
+  }
+
+  createPhone = async (phone: Phone) => {
+    this.loadingPhone = true;
+    try {
+      phone.id = uuid();
+      await agent.Phones.createPhone(this.selectedContact!.id, phone)
+      runInAction(() => {
+        if(this.selectedContact?.phones === null) {
+          this.selectedContact.phones = []
+        }
+        this.selectedContact?.phones.push(phone);
+      })
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => {
+        this.loadingPhone = false;
+      })
+    }
+  }
+
+  updatePhone =async (phone: Phone) => {
+    this.loadingPhone = true;
+    try {
+      await agent.Phones.updatePhone(phone);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => this.loadingPhone = false)
+    }
+  }
+
+  deletePhone = async (id: string) => {
+    this.loadingPhone = true;
+    try {
+      await agent.Phones.deletePhone(id);
+      runInAction(() => {
+        this.selectedContact!.phones = this.selectedContact!.phones!.filter(p => p.id !== id);
+      })
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => this.loadingPhone = false)
     }
   }
 

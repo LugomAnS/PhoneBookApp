@@ -38,10 +38,10 @@ export interface ContactAddress {
   flat: string;
 }
 
-export interface Phone {
-  id: string;
-  phoneNumber: string;
-  type: string;
+export class Phone {
+  id?: string;
+  phoneNumber: string = '';
+  type: string = '';
 }
 
 export interface ContactDetails {

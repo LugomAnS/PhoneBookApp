@@ -1,12 +1,17 @@
 import { observer } from "mobx-react-lite";
 import { Phone } from "../../../app/models/contact";
 import { Button, Grid, Label, List, Segment } from "semantic-ui-react";
+import PhoneListItem from "./PhoneListItem";
+import { useStore } from "../../../app/stores/store";
+import PhoneForm from "../form/PhoneForm";
 
 interface Props {
   phones: Phone[] | null;
 }
 
 export default observer(function ContactPhoneList({phones}: Props) {
+  const {profileStore:{addingPhone, setAddingPhone}} = useStore();
+
   return (
     <Grid.Column width={16}>
       <Segment attached>
@@ -14,25 +19,16 @@ export default observer(function ContactPhoneList({phones}: Props) {
           <List>
             {phones !== null && phones.length > 0 ? (
               phones.map(p => (
-                <List.Item key={p.id}>
-                  <Grid verticalAlign="middle">
-                    <Grid.Column width={2}>
-                      <div>{(p.type || "<Без категории>") + ": "}</div>
-                    </Grid.Column>
-                    <Grid.Column width={4}>
-                      <div>{"+" + p.phoneNumber}</div>
-                    </Grid.Column>
-                    <Grid.Column width={10}>
-                      <Button.Group size='tiny' floated="right">
-                        <Button icon='edit' />
-                        <Button icon='delete' />
-                      </Button.Group>
-                    </Grid.Column>
-                  </Grid>
-                </List.Item>
+                <PhoneListItem key={p.id} phone={p} />
               ))
             ) : <div style={{fontStyle: 'italic'}}>Нет добавленных номеров</div>}
           </List>
+          {addingPhone &&
+          <PhoneForm />}
+          {!addingPhone &&
+          <Button content="Добавить телефон" icon="plus" fluid
+            onClick={() => setAddingPhone()}
+          />}
       </Segment>
     </Grid.Column>
   )
