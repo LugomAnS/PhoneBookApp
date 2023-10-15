@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../app/stores/store";
-import { Button, Grid, Header, List, Segment } from "semantic-ui-react";
+import { Button, Divider, Grid, Header, List, Search, Segment } from "semantic-ui-react";
 import { useEffect } from "react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import ContactListItem from "./ContactListItem";
@@ -8,11 +8,12 @@ import { Link, Outlet } from "react-router-dom";
 
 export default observer(function ContactsDashboard() {
   const {profileStore} = useStore();
-  const {contactsList, loadProfile, loadingContacts, contacts} = profileStore;
+  const {loadProfile, loadingContacts, contacts,setContactFilter, filteredList} = profileStore;
 
   useEffect(() => {
     loadProfile();
   }, [loadProfile])
+
 
   if(loadingContacts) return <LoadingComponent content="Загрузка контактов" />
 
@@ -26,9 +27,17 @@ export default observer(function ContactsDashboard() {
             content="Добавить контакт"
             icon='add'
           />
+          <Divider />
+            <Search
+              size="large"
+              showNoResults={false}
+              placeholder="Поиск"
+              resultRenderer={() => <></>}
+              onSearchChange={(_, values) => setContactFilter(values.value as string)}
+            />
           {contacts.size > 0 ? (
             <List selection>
-              {contactsList.map(e => (
+              {filteredList.map(e => (
                 <ContactListItem key={e.id} contact={e} />
               ))}
             </List>

@@ -20,6 +20,21 @@ export class ProfileStore {
     return Array.from(this.contacts.values());
   }
 
+  getFullName = (contact: Contact) => {
+    return (contact.surname + " " + contact.name + " " + contact.patronymic).toLowerCase();
+  }
+
+  get filteredList () {
+    return Array.from(this.contacts.values()).filter(contact => {
+      const fullName = this.getFullName(contact);
+      return fullName.includes((this.contactFilter ? this.contactFilter : "").toLowerCase());
+    })
+  }
+
+  setContactFilter = (value: string | null) => {
+    this.contactFilter = value;
+  }
+
   setContact = (contact: Contact) => {
     this.contacts.set(contact.id, contact);
   }
