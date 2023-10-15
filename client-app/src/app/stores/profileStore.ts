@@ -119,6 +119,12 @@ export class ProfileStore {
     this.loadingPhone = true;
     try {
       await agent.Phones.updatePhone(phone);
+      runInAction(() => {
+        if(this.selectedContact && this.selectedContact.phones) {
+          const index = this.selectedContact.phones.findIndex(e => e.id === phone.id);
+          this.selectedContact.phones[index] = phone;
+        }
+      })
     } catch (error) {
       console.log(error);
     } finally {

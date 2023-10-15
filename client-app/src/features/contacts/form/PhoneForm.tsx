@@ -2,31 +2,41 @@ import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import { Phone } from "../../../app/models/contact";
 import { useState } from "react";
-import { Button, Grid, List } from "semantic-ui-react";
+import { Button, Grid } from "semantic-ui-react";
 import InputField from "../../../app/common/form/InputField";
 import { useStore } from "../../../app/stores/store";
 
 interface Props {
   phone?: Phone
+  cancelEdit?: (param: boolean) => void;
 }
 
-export default observer(function PhoneForm({phone}: Props) {
-  const {profileStore:{createPhone, setAddingPhone}} = useStore();
+export default observer(function PhoneForm({phone, cancelEdit}: Props) {
+  const {profileStore:{createPhone, setAddingPhone, updatePhone}} = useStore();
   const [phoneForm, setPhoneForm] = useState<Phone>(new Phone());
+  const [isEditForm, setIsEditForm] = useState(false)
 
   useState(() => {
     if(phone) {
       setPhoneForm(phone)
+      setIsEditForm(true)
     }
   })
+
+  function handleSavingSubmit(values: Phone) {
+    if(values.id === undefined) {
+      return createPhone(values).then(() => setAddingPhone());
+    } else {
+      return updatePhone(values).then(() => cancelEdit!(false));
+    }
+  }
 
   return (
     <Formik
       enableReinitialize
       initialValues={phoneForm}
-      onSubmit={(values, {setSubmitting}) => createPhone(values).then(() => {
+      onSubmit={(values, {setSubmitting}) => handleSavingSubmit(values).then(() => {
         setSubmitting(false);
-        setAddingPhone();
       } )}
 
     >
@@ -35,7 +45,6 @@ export default observer(function PhoneForm({phone}: Props) {
           className="ui form"
           onSubmit={handleSubmit}
         >
-          <List.Item style={{paddingBottom: 10}}>
             <Grid verticalAlign='middle'>
               <Grid.Column width={4}>
                 <InputField name="type" placeholder="тип телефона" />
@@ -51,13 +60,18 @@ export default observer(function PhoneForm({phone}: Props) {
                     loading={isSubmitting}
                     disabled={isSubmitting || !isValid || !dirty}
                   />
-                  <Button icon='cancel'
-                    onClick={() => setAddingPhone()}
-                  />
+                  {isEditForm && cancelEdit ? (
+                    <Button icon='cancel' type="button"
+                      onClick={() => cancelEdit(false)}
+                    />
+                  ) : (
+                    <Button icon='cancel' type="button"
+                      onClick={() => setAddingPhone()}
+                    />
+                  )}
                 </Button.Group>
               </Grid.Column>
             </Grid>
-          </List.Item>
         </Form>
       )}
     </Formik>
