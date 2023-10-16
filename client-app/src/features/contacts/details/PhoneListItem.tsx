@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Phone } from "../../../app/models/contact";
-import { Button, Grid, List } from "semantic-ui-react";
+import { Button, Grid, List, Popup } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import { SyntheticEvent, useState } from "react";
 import PhoneItem from "./PhoneItem";
@@ -27,12 +27,25 @@ export default observer(function PhoneListItem({phone}: Props) {
         <PhoneItem phone={phone} />
         <Grid.Column width={10}>
           <Button.Group size='tiny' floated="right">
-            <Button icon='edit' onClick={() => setIsEdit(true)}/>
-            <Button icon='trash'
-              name={phone.id}
-              loading={target == phone.id && loadingPhone}
-              onClick={(e) => handlePhoneDelete(e)}
-            />
+            <Popup hoverable
+              position='top right'
+              trigger={
+                <Button icon='edit' color="green" onClick={() => setIsEdit(true)}/>
+              }
+            >
+              <p>Редактировать</p>
+            </Popup>
+            <Popup hoverable
+              position='top right'
+              trigger={
+                <Button icon='trash' color="red"
+                  name={phone.id}
+                  loading={target == phone.id && loadingPhone}
+                  onClick={(e) => handlePhoneDelete(e)}
+                />
+              }>
+              <p>Удалить</p>
+            </Popup>
           </Button.Group>
         </Grid.Column>
       </Grid>

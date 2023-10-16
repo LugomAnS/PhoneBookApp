@@ -12,7 +12,7 @@ import { router } from "../../../app/router/router";
 import { ServerErrorMessage } from "../../../app/models/errorMessage";
 
 export default observer(function ContactDetails() {
-  const {profileStore: {selectedContact, loadContactDetails, loadingDetails, deleteContact}} = useStore();
+  const {profileStore: {selectedContact, loadContactDetails, loadingDetails, deleteContact, setSelectedContact}} = useStore();
   const {id} = useParams();
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,6 +38,11 @@ export default observer(function ContactDetails() {
     });
   }
 
+  function handleCloseDetailsForm() {
+    router.navigate('/contacts');
+    setSelectedContact(null);
+  }
+
   if(loadingDetails) return <LoadingComponent content="Загрузка информации о контакте..."/>
   if(selectedContact == null) return <ContactIndexPage />
 
@@ -54,7 +59,7 @@ export default observer(function ContactDetails() {
               <Popup hoverable
                 position='left center'
                 trigger={
-                  <Button icon='close' as={Link} to='/contacts' size="tiny"/>
+                  <Button icon='close' onClick={() => handleCloseDetailsForm()} size="tiny"/>
                 }
               ><p>Закрыть</p></Popup>
               <Popup hoverable

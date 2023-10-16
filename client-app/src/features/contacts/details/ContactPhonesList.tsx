@@ -27,7 +27,7 @@ export default observer(function ContactPhoneList({phones}: Props) {
           <PhoneForm />}
           {!addingPhone &&
           <Button content="Добавить телефон" icon="plus" fluid
-            onClick={() => setAddingPhone()}
+            onClick={() => setAddingPhone(true)}
           />}
       </Segment>
     </Grid.Column>

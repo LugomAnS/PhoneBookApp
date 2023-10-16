@@ -39,8 +39,12 @@ export class ProfileStore {
     this.contacts.set(contact.id, contact);
   }
 
-  setAddingPhone = () => {
-    this.addingPhone = !this.addingPhone;
+  setSelectedContact = (value: ContactDetails | null) => {
+    this.selectedContact = value;
+  }
+
+  setAddingPhone = (prop: boolean) => {
+    this.addingPhone = prop;
   }
 
   loadProfile =async () => {

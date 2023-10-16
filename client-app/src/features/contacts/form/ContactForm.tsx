@@ -89,7 +89,7 @@ export default function ContactForm() {
       disabled={isSubmitting || !isValid || !dirty}
       loading={isSubmitting}
       />
-      <Button content='Отмена' as={Link} to='/contacts' />
+      <Button content='Отмена' as={Link} to={selectedContact?.id ? `/contacts/${selectedContact.id}` : '/contacts'} />
       </Form>)}
     </Formik>
   )

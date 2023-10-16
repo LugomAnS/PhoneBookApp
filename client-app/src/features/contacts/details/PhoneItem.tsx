@@ -13,7 +13,7 @@ export default observer(function PhoneItem({phone}: Props) {
         <div>{(phone.type || "<Без категории>") + ":"}</div>
       </Grid.Column>
       <Grid.Column width={4}>
-        <div>{"+" + phone.phoneNumber}</div>
+        <div>{phone.phoneNumber}</div>
       </Grid.Column>
     </>
   )
