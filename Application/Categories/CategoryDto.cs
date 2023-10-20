@@ -1,0 +1,9 @@
+﻿namespace Application.Categories
+{
+    public class CategoryDto
+    {
+        public Guid Id { get; set; }
+        public string Category { get; set; }
+
+    }
+}

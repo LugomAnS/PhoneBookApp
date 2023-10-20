@@ -12,7 +12,7 @@ export default function InputField(props: Props) {
   const [field, meta] = useField(props.name);
   return (
     <Form.Field error={meta.touched && !!meta.error}>
-      <label>{props.label}</label>
+      <label>{props.label ? props.label : undefined}</label>
       <input {...field} {...props}/>
       {meta.touched && meta.error ? (
         <Label basic color='red'

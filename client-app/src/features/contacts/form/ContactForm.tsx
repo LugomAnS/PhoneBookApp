@@ -9,11 +9,12 @@ import { ContactFormValues } from "../../../app/models/contact";
 import { router } from "../../../app/router/router";
 import TextAreaField from "../../../app/common/form/TextAreaField";
 import { useEffect, useState } from "react";
+import SelectInputField from "../../../app/common/form/SelectInputField";
 
 
 
 export default function ContactForm() {
-  const {profileStore: {createContact, selectedContact, loadContactDetails, updateContact}} = useStore();
+  const {profileStore: {createContact, selectedContact, loadContactDetails, updateContact, contactsCategoryOptions, categories}} = useStore();
   const [contact, setContact] = useState<ContactFormValues>(new ContactFormValues());
   const {id} = useParams();
 
@@ -32,14 +33,21 @@ export default function ContactForm() {
   })
 
   function handleForm(contact: ContactFormValues) {
+    const category = Array.from(categories.values()).find(c => c.category === contact.category?.category);
+    if(contact.category && category?.id) {
+      contact.category = category;
+    } else {
+      contact.category = null;
+    }
     if(!contact.id) {
       contact.id = uuid();
       createContact(contact).then(() => router.navigate(`/contacts/${contact.id}`));
     } else {
       updateContact(contact).then(() => router.navigate(`/contacts/${contact.id}`));
-
     }
   }
+
+  console.log(contactsCategoryOptions);
 
   return (
     <Formik
@@ -67,6 +75,12 @@ export default function ContactForm() {
               </Grid.Column>
             </Grid>
           </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Segment attached>
+            <Label attached="top" content="Группа"/>
+            <SelectInputField options={contactsCategoryOptions} name="category.category" placeholder="Группа" clear={true}/>
+          </Segment>
         </Grid.Row>
         <Grid.Row>
           <Segment attached>

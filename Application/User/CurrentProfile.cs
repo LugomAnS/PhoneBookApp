@@ -33,9 +33,7 @@ namespace Application.User
                     .ProjectTo<UserProfileDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(CancellationToken.None);
 
-                if (profile == null) return null;
-
-                return  Result<UserProfileDto>.Success(profile);
+                return profile == null ? null : Result<UserProfileDto>.Success(profile);
             }
         }
     }

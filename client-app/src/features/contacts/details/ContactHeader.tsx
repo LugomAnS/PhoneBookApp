@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
-import { Contact } from "../../../app/models/contact";
+import { ContactDetails } from "../../../app/models/contact";
 import { Grid, Image } from "semantic-ui-react";
 
 interface Props {
-  contact: Contact | null;
+  contact: ContactDetails | null;
 }
 
 export default observer(function ContactHeader({contact}: Props) {

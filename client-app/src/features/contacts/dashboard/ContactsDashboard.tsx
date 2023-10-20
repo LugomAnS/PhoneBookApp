@@ -8,7 +8,7 @@ import { Link, Outlet } from "react-router-dom";
 
 export default observer(function ContactsDashboard() {
   const {profileStore} = useStore();
-  const {loadProfile, loadingContacts, contacts,setContactFilter, filteredList} = profileStore;
+  const {loadProfile, loadingContacts, contacts, setContactFilter, filteredList} = profileStore;
 
   useEffect(() => {
     loadProfile();

@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Application.Categories;
+using Domain;
 
 namespace Application.Contacts
 {

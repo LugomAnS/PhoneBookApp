@@ -42,6 +42,13 @@ namespace Application.Contacts
 
                 request.Contact.Owner = user;
 
+                if (request.Contact.Category != null)
+                {
+                    var category = await _dataContext.Categories.FindAsync(request.Contact.Category.Id);
+                    request.Contact.Category = category;
+                   
+                }
+
                 _dataContext.Contacts.Add(request.Contact);
 
                 var result = await _dataContext.SaveChangesAsync(CancellationToken.None) > 0;

@@ -5,6 +5,7 @@ interface Props {
   name: string;
   placeholder: string;
   label?: string;
+  clear?: boolean;
   options: {text: string, value: string}[];
 }
 
@@ -14,6 +15,7 @@ export default function SelectInputField(props: Props) {
     <Form.Field error={meta.touched && !!meta.error}>
       <label>{props.label}</label>
       <Select
+        clearable={props.clear ? props.clear : false}
         placeholder={props.placeholder}
         options={props.options}
         value={field.value || null}

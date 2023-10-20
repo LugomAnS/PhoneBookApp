@@ -14,6 +14,8 @@ namespace Persistence
         public DbSet<Phone> Phones { get; set; }
         public DbSet<Address> Addresses { get; set; }
 
+        public DbSet<ContactCategory> Categories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -33,6 +35,15 @@ namespace Persistence
                 .WithOne(o => o.Owner)
                 .HasForeignKey<Address>(a => a.Id)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ContactCategory>()
+                .HasOne(c => c.CategoryOwner)
+                .WithMany(o => o.Categories);
+
+            builder.Entity<ContactCategory>()
+                .HasMany(c => c.Contacts)
+                .WithOne(o => o.Category)
+                .HasForeignKey(c => c.CategoryId);
 
         }
 

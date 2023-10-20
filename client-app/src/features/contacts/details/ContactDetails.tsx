@@ -33,7 +33,7 @@ export default observer(function ContactDetails() {
         });
       }
     }).then(() => {
-    //  setDeleting(false);
+      setDeleting(false);
       router.navigate('/contacts');
     });
   }
@@ -85,6 +85,24 @@ export default observer(function ContactDetails() {
         <Grid.Row>
           <Grid.Column width={16}>
             <Segment attached>
+              <Label attached="top" content='Группа'/>
+              {selectedContact.category ? (
+                <p>{selectedContact.category}</p>
+              ) : (
+                <p style={{fontStyle: 'italic'}}>{"<Без группы>"}</p>
+              )}
+            </Segment>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <ContactPhonesList phones={selectedContact?.phones ? selectedContact.phones : null}/>
+        </Grid.Row>
+        <Grid.Row>
+          <ContactAddress address={selectedContact?.contactAddress ? selectedContact.contactAddress : null} />
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={16}>
+            <Segment attached>
               <Label attached="top" content="Описание" />
               {selectedContact?.description ? (
                 <p>{selectedContact.description}</p>
@@ -93,12 +111,6 @@ export default observer(function ContactDetails() {
               )}
             </Segment>
           </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <ContactAddress address={selectedContact?.contactAddress ? selectedContact.contactAddress : null} />
-        </Grid.Row>
-        <Grid.Row>
-          <ContactPhonesList phones={selectedContact?.phones ? selectedContact.phones : null}/>
         </Grid.Row>
       </Grid>
     </>

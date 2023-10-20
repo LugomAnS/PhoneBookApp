@@ -2,9 +2,12 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { Contact, ContactDetails, ContactFormValues, Phone } from "../models/contact";
 import agent from "../api/agent";
 import { v4 as uuid} from 'uuid';
+import { ContactCategory } from "../models/contactCategory";
+import { router } from "../router/router";
 
 export class ProfileStore {
   contacts = new Map<string, Contact>();
+  categories = new Map<string, ContactCategory>();
   contactFilter: string | null = null;
   loadingContacts = false;
   selectedContact: ContactDetails | null = null;
@@ -31,12 +34,37 @@ export class ProfileStore {
     })
   }
 
+  get contactsCategoryOptions () {
+    const options: {text: string, value: string} [] = [];
+    this.categories.forEach(category => {
+      options.push({text: category.category, value: category.category})
+    })
+
+    return options;
+  }
+
   setContactFilter = (value: string | null) => {
     this.contactFilter = value;
   }
 
   setContact = (contact: Contact) => {
     this.contacts.set(contact.id, contact);
+  }
+
+  setContactCategory = (category: ContactCategory) => {
+    this.categories.set(category.id!, category);
+  }
+
+  setContactFromDetails = (contact: ContactDetails) => {
+    const listItem = this.contacts.get(contact.id);
+    if(listItem) {
+      listItem.name = contact.name;
+      listItem.surname = contact.surname;
+      listItem.patronymic = contact.patronymic;
+      listItem.category = contact.category;
+
+      this.contacts.set(listItem.id, listItem);
+    }
   }
 
   setSelectedContact = (value: ContactDetails | null) => {
@@ -53,6 +81,7 @@ export class ProfileStore {
       const result = await agent.Profile.getProfile();
       runInAction(() => {
         result.contacts.forEach(contact => this.setContact(contact));
+        result.categories.forEach(category => this.setContactCategory(category));
       })
     } catch (error) {
       console.log(error);
@@ -82,7 +111,8 @@ export class ProfileStore {
         id: contact.id!,
         surname: contact.surname,
         name: contact.name!,
-        patronymic: contact.patronymic!
+        patronymic: contact.patronymic!,
+        category: contact.category?.category
       }
       this.setContact(newContact);
     } catch (error) {
@@ -93,7 +123,7 @@ export class ProfileStore {
   updateContact = async (contact: ContactFormValues) => {
     try {
       await agent.Contacts.editContact(contact);
-      this.loadContactDetails(contact.id!);
+      await this.loadContactDetails(contact.id!);
       this.setContact(this.selectedContact!);
     } catch (error) {
       console.log(error);
@@ -103,6 +133,7 @@ export class ProfileStore {
   deleteContact = async () => {
     try {
       await agent.Contacts.deleteContact(this.selectedContact!.id);
+      router.navigate('/contacts');
       runInAction(() => {
         const id = this.selectedContact!.id;
         this.selectedContact = null;

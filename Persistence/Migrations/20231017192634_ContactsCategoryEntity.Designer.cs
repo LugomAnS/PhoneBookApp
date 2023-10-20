@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -10,9 +11,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231017192634_ContactsCategoryEntity")]
+    partial class ContactsCategoryEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
@@ -118,7 +121,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -329,7 +332,9 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.ContactCategory", "Category")
                         .WithMany("Contacts")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
 
                     b.HasOne("Domain.AppUser", "Owner")
                         .WithMany("Contacts")
@@ -345,7 +350,8 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.AppUser", "CategoryOwner")
                         .WithMany("Categories")
-                        .HasForeignKey("CategoryOwnerId");
+                        .HasForeignKey("CategoryOwnerId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("CategoryOwner");
                 });

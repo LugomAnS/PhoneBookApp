@@ -1,3 +1,5 @@
+import { ContactCategory } from "./contactCategory";
+
 export interface Contact {
   id: string;
   surname: string;
@@ -11,7 +13,7 @@ export class ContactFormValues {
   surname: string = '';
   name: string | null = null;
   patronymic: string | null = null;
-  category: string| null = null;
+  category: ContactCategory | null = {category: ''};
   description: string | null = null;
   contactAddress: ContactAddress | null = null;
   phones: Phone[] | null = null;
@@ -22,7 +24,7 @@ export class ContactFormValues {
       this.surname = contact.surname;
       this.name = contact.name;
       this.patronymic = contact.patronymic;
-      this.category = contact.category;
+      this.category!.category = contact.category;
       this.description = contact.description;
       this.contactAddress = contact.contactAddress;
       this.phones = contact.phones;

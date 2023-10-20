@@ -3,6 +3,7 @@ using AutoMapper;
 using Domain;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Contacts
@@ -38,10 +39,13 @@ namespace Application.Contacts
                 var contact = await _dataContext.Contacts.FindAsync(request.Contact.Id);
                 var address = await _dataContext.Addresses.FindAsync(request.Contact.ContactAddress.Id);
 
-                request.Contact.CleanAllFields();
+                if (contact == null) return null;
 
+                request.Contact.CleanAllFields();
+                
                 if (request.Contact.ContactAddress == null && address != null)
                     _dataContext.Addresses.Remove(address);
+
                 
                 _mapper.Map(request.Contact, contact);
                 

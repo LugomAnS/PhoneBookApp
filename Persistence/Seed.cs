@@ -21,6 +21,25 @@ namespace Persistence
                 
                 await userManager.CreateAsync(user, "Pa$$w0rd");
 
+                var workCategory = new ContactCategory
+                {
+                    Id = new Guid(),
+                    Category = "Работа",
+                    CategoryOwner = user,
+                    Contacts = new List<Contact>()
+                };
+
+                var familyCategory = new ContactCategory
+                {
+                    Id = new Guid(),
+                    Category = "Семья",
+                    CategoryOwner = user,
+                    Contacts = new List<Contact>()
+                };
+
+                var categories = new List<ContactCategory> { workCategory, familyCategory };
+
+
                 var contacts = new List<Contact>
                 {
                     new Contact
@@ -29,7 +48,7 @@ namespace Persistence
                         Surname = "Николаев",
                         Name = "Николай",
                         Patronymic = "Николаевич",
-                        Category = "Работа",
+                        Category = workCategory,
                         Description = "Коллега по работе",
                         ContactAddress = new Address
                         {
@@ -58,11 +77,11 @@ namespace Persistence
                     new Contact
                     {
                         Id = new Guid(),
-                        Surname = "Николаев",
-                        Name = "Николай",
-                        Patronymic = "Николаевич",
-                        Category = "Работа",
-                        Description = "Коллега по работе",
+                        Surname = "Сергеев",
+                        Name = "Сергей",
+                        Patronymic = "Сергеевич",
+                        Category = familyCategory,
+                        Description = "Член семьи",
                         ContactAddress = new Address
                         {
                             Id = new Guid(),
@@ -96,7 +115,11 @@ namespace Persistence
 
                 };
 
+                categories[0].Contacts.Add(contacts[0]);
+                categories[1].Contacts.Add(contacts[1]);
+
                 user.Contacts = contacts;
+                user.Categories = categories;
 
                 await context.SaveChangesAsync();
 

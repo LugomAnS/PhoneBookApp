@@ -15,7 +15,7 @@ export default observer(function ContactPhoneList({phones}: Props) {
   return (
     <Grid.Column width={16}>
       <Segment attached>
-        <Label attached='top' content='Список номеров' />
+        <Label attached='top' content='Телефонные номера' />
           <List>
             {phones !== null && phones.length > 0 ? (
               phones.map(p => (
