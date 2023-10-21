@@ -6,20 +6,20 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Contacts
+namespace Application.Categories
 {
-    public class ContactCreate
+    public class CategoryCreate
     {
-        public class Command : IRequest<Result<Unit>>
+        public class Command: IRequest<Result<Unit>>
         {
-            public Contact Contact { get; set; }
-        }
+            public CategoryDto Category { get; set; }
 
-        public class ContactCommandValidator : AbstractValidator<Command>
+        }
+        public class CategoryCommandValidator: AbstractValidator<Command>
         {
-            public ContactCommandValidator()
+            public CategoryCommandValidator()
             {
-                RuleFor(c => c.Contact).SetValidator(new ContactValidator());
+                RuleFor(c => c.Category.Category).NotEmpty();
             }
         }
 
@@ -38,22 +38,22 @@ namespace Application.Contacts
             {
                 var user = await _dataContext.Users.FirstOrDefaultAsync(u => u.Email == _userAccessor.GetUserEmail());
 
-                request.Contact.CleanAllFields();
+                if (user == null) return null;
 
-                request.Contact.Owner = user;
-
-                if (request.Contact.Category != null)
+                var category = new ContactCategory
                 {
-                    var category = await _dataContext.Categories.FindAsync(request.Contact.Category.Id);
-                    request.Contact.Category = category;
-                   
-                }
+                    Id = request.Category.Id,
+                    Category = request.Category.Category,
+                    CategoryOwner = user
+                };
 
-                _dataContext.Contacts.Add(request.Contact);
+                _dataContext.Categories.Add(category);
 
                 var result = await _dataContext.SaveChangesAsync(CancellationToken.None) > 0;
 
-                return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Ошибка при создании контакта");
+                return result
+                    ? Result<Unit>.Success(Unit.Value)
+                    : Result<Unit>.Failure("Ошибка при добавлении категории");
             }
         }
     }

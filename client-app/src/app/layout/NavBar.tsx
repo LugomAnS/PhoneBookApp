@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
 import { useStore } from "../stores/store";
 
@@ -21,7 +21,7 @@ export default observer(function NavBar() {
           <Image src='/src/assets/user.png' avatar spaced='right'/>
           <Dropdown pointing='top right' text={displayName}>
             <Dropdown.Menu fixed='right'>
-              <Dropdown.Item text='Профиль' icon='user'/>
+              <Dropdown.Item text='Профиль' icon='user' as={Link} to='/profile'/>
               <Dropdown.Item text='Выйти' onClick={logout} icon='power'/>
             </Dropdown.Menu>
           </Dropdown>

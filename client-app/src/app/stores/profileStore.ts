@@ -14,6 +14,8 @@ export class ProfileStore {
   loadingDetails = false;
   loadingPhone = false;
   addingPhone = false;
+  addingCategory = false;
+  loadingCategory = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -41,6 +43,10 @@ export class ProfileStore {
     })
 
     return options;
+  }
+
+  get categoriesList () {
+    return Array.from(this.categories.values());
   }
 
   setContactFilter = (value: string | null) => {
@@ -71,8 +77,12 @@ export class ProfileStore {
     this.selectedContact = value;
   }
 
-  setAddingPhone = (prop: boolean) => {
-    this.addingPhone = prop;
+  setAddingPhone = (value: boolean) => {
+    this.addingPhone = value;
+  }
+
+  setAddingCategory = (value: boolean) => {
+    this.addingCategory = value;
   }
 
   loadProfile =async () => {
@@ -136,7 +146,7 @@ export class ProfileStore {
       router.navigate('/contacts');
       runInAction(() => {
         const id = this.selectedContact!.id;
-        this.selectedContact = null;
+        this.setSelectedContact(null);
         this.contacts.delete(id);
       })
     } catch (error) {
@@ -193,6 +203,61 @@ export class ProfileStore {
       console.log(error);
     } finally {
       runInAction(() => this.loadingPhone = false)
+    }
+  }
+
+  createCategory = async (category: ContactCategory) => {
+    this.loadingCategory = true;
+    try {
+      await agent.Categories.createCategory(category);
+      this.setContactCategory(category);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => {
+        this.addingCategory = false;
+        this.loadingCategory  =false;
+      })
+    }
+  }
+
+  editCategory = async (category: ContactCategory) => {
+    this.loadingCategory = true;
+    try {
+      const oldCategory = this.categories.get(category.id!)?.category;
+      await agent.Categories.updateCategory(category);
+      this.setContactCategory(category);
+      runInAction(() => {
+        this.contacts.forEach(contact => {
+          if(contact.category === oldCategory) {
+            contact.category = category.category;
+          }
+        })
+      })
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => this.loadingCategory = false);
+    }
+  }
+
+  deleteCategory = async (id: string) => {
+    this.loadingCategory = true;
+    try {
+      await agent.Categories.deleteCategory(id);
+      runInAction(() => {
+        const oldCategory = this.categories.get(id)?.category;
+        this.contacts.forEach(contact => {
+          if(contact.category === oldCategory) {
+            contact.category = undefined;
+          }
+        })
+        this.categories.delete(id);
+      })
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => this.loadingCategory = false);
     }
   }
 

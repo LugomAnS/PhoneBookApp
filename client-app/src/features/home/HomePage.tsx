@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite"
 import { Container, Header, Segment, Divider, List, Button } from "semantic-ui-react"
 import { useStore } from "../../app/stores/store"
-import LoginForm from "../user/LoginForm";
-import RegistryForm from "../user/RegistryForm";
+import LoginForm from "../user/access/LoginForm";
+import RegistryForm from "../user/access/RegistryForm";
 import { router } from "../../app/router/router";
 
 export default observer(function HomePage() {

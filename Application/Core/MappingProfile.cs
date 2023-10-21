@@ -22,6 +22,7 @@ namespace Application.Core
             CreateMap<Phone, Phone>();
 
             CreateMap<ContactCategory, CategoryDto>();
+            CreateMap<CategoryDto, ContactCategory>();
         }
     }
 }

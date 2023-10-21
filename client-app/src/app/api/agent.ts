@@ -4,6 +4,7 @@ import { store } from "../stores/store";
 import { ServerErrorMessage } from "../models/errorMessage";
 import { UserProfile } from "../models/userProfile";
 import { ContactDetails, ContactFormValues, Phone } from "../models/contact";
+import { ContactCategory } from "../models/contactCategory";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -93,11 +94,18 @@ const Phones = {
   deletePhone: (id: string) => request.del<void>(`/phones/${id}`)
 }
 
+const Categories = {
+  createCategory: (category: ContactCategory) => request.post<void>('/contactcategory', category),
+  updateCategory: (category: ContactCategory) => request.put<void>('/contactcategory', category),
+  deleteCategory: (id: string) => request.del<void>(`/contactcategory/${id}`)
+}
+
 const agent = {
   Account,
   Profile,
   Contacts,
-  Phones
+  Phones,
+  Categories
 }
 
 export default agent;

@@ -7,6 +7,7 @@ import ContactsDashboard from "../../features/contacts/dashboard/ContactsDashboa
 import ContactDetails from "../../features/contacts/details/ContactDetails";
 import ContactIndexPage from "../../features/contacts/details/ContactIndexPage";
 import ContactForm from "../../features/contacts/form/ContactForm";
+import UserProfilePage from "../../features/user/dashboard/UserProfilePage";
 
 export const routes: RouteObject[] = [
   {
@@ -24,7 +25,8 @@ export const routes: RouteObject[] = [
               { path: 'create', element: <ContactForm key='create'/>},
               { path: ':id/edit', element: <ContactForm key='edit'/>}
             ]
-          }
+          },
+          { path: 'profile', element: <UserProfilePage />}
         ]
       },
       { path: 'not-found', element: <NotFound />},

@@ -1,10 +1,10 @@
 import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../../app/stores/store";
+import { useStore } from "../../../app/stores/store";
 import * as Yup from 'yup';
 import { Button, Header, Message } from "semantic-ui-react";
-import InputField from "../../app/common/form/InputField";
-import { ServerErrorMessage } from "../../app/models/errorMessage";
+import InputField from "../../../app/common/form/InputField";
+import { ServerErrorMessage } from "../../../app/models/errorMessage";
 import { useState } from "react";
 
 export default observer(function RegistryForm() {

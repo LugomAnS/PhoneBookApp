@@ -19,10 +19,9 @@ export default observer(function ContactDetails() {
 
   useEffect(() => {
     if(id) {
-      if(id !== selectedContact?.id)
         loadContactDetails(id);
     }
-  }, [loadContactDetails, id, selectedContact])
+  }, [loadContactDetails, id])
 
   function handleDeleteContact() {
     setDeleting(true);
@@ -34,7 +33,6 @@ export default observer(function ContactDetails() {
       }
     }).then(() => {
       setDeleting(false);
-      router.navigate('/contacts');
     });
   }
 
