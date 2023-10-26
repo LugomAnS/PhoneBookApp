@@ -16,7 +16,7 @@ export default observer(function ContackListItem({contact}: Props) {
         trigger={
           <Card style={{borderRadius: '15px'}}>
           <Card.Content>
-            <Image src='/src/assets/user.png' size='mini' floated='left' circular/>
+            <Image src={contact.imageUrl || '/src/assets/user.png'} size='mini' floated='left' circular/>
             <Card.Header>
               {contact.surname}
             </Card.Header>

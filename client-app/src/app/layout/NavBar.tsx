@@ -4,7 +4,7 @@ import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
 import { useStore } from "../stores/store";
 
 export default observer(function NavBar() {
-  const {userStore: {displayName, logout}} = useStore();
+  const {userStore: {displayName, logout, user}} = useStore();
   return (
     <Menu pointing secondary>
       <Container>
@@ -18,7 +18,7 @@ export default observer(function NavBar() {
         />
 
         <Menu.Item position='right'>
-          <Image src='/src/assets/user.png' avatar spaced='right'/>
+          <Image src={user?.imageUrl || '/src/assets/user.png'} avatar spaced='right'/>
           <Dropdown pointing='top right' text={displayName}>
             <Dropdown.Menu fixed='right'>
               <Dropdown.Item text='Профиль' icon='user' as={Link} to='/profile'/>

@@ -25,7 +25,8 @@ export default observer(function HomePage() {
           <Button content='Перейти к контактам' onClick={() => router.navigate('contacts')}/>
         ) : (
           <>
-            <Button inverted color='green' content='Войти' onClick={() => modalStore.openModal(<LoginForm />)}/>
+            <Button inverted color='green' content='Войти' onClick={() => {modalStore.openModal(<LoginForm />)
+            }}/>
             <Button primary color='green' content='Зарегистрироваться' onClick={() => modalStore.openModal(<RegistryForm />)}/>
           </>
         )}

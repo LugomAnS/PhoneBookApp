@@ -71,4 +71,9 @@ export default class UserStore {
     store.profileStore.resetStore();
     router.navigate('/');
   }
+
+  uploadPhoto = (file: Blob) => {
+    this.user!.image = file;
+    this.user!.imageUrl = URL.createObjectURL(this.user!.image);
+  }
 }

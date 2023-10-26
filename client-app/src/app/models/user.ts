@@ -4,6 +4,8 @@ export interface User {
   surname: string;
   name: string;
   patronymic: string;
+  image?: Blob;
+  imageUrl: string;
 }
 
 export interface UserForm {

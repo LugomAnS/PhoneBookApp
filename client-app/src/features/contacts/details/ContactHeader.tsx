@@ -1,17 +1,21 @@
 import { observer } from "mobx-react-lite";
 import { ContactDetails } from "../../../app/models/contact";
-import { Grid, Image } from "semantic-ui-react";
+import { Button, Grid, Image } from "semantic-ui-react";
+import { useStore } from "../../../app/stores/store";
+import PhotoUploadModal from "../../photo/PhotoUploadModal";
 
 interface Props {
   contact: ContactDetails | null;
 }
 
 export default observer(function ContactHeader({contact}: Props) {
+  const {profileStore: {uploadContactPhoto}, modalStore: {openModal}} = useStore();
   return (
     <Grid.Column width={15} style={{fontSize: '24px'}}>
       <Grid verticalAlign='middle'>
         <Grid.Column width={4}>
-          <Image src='/src/assets/user.png' size='small' floated='left' />
+          <Image src={contact?.imageUrl || '/src/assets/user.png'} size='small' floated='left' />
+          <Button content='Добавить фото' onClick={() => openModal(<PhotoUploadModal uploadPhoto={uploadContactPhoto}/>, 'small')} />
         </Grid.Column>
         <Grid.Column width={3}>
           <p>{"Фамилия: "}</p>

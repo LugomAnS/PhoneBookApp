@@ -10,7 +10,7 @@ export default observer(function ModalContainer(){
       dimmer='blurring'
       open={modalStore.isOpen}
       onClose={modalStore.closeModal}
-      size='mini'
+      size={modalStore.modalSize}
     >
       <Modal.Content>
         {modalStore.body}

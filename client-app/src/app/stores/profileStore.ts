@@ -261,6 +261,15 @@ export class ProfileStore {
     }
   }
 
+  uploadContactPhoto = (file: Blob) => {
+    this.selectedContact!.image = file;
+    this.selectedContact!.imageUrl = URL.createObjectURL(file);
+    const contact = this.contacts.get(this.selectedContact!.id);
+    if(contact) {
+      contact.imageUrl = this.selectedContact!.imageUrl;
+    }
+  }
+
   resetStore = () => {
     this.contacts.clear();
     this.contactFilter = null;

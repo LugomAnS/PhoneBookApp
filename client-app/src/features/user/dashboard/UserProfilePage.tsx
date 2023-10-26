@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import CategoriesList from "../categories/CategoriesList";
 
 export default observer(function UserProfilePage() {
-  const {userStore: {user, loginCurrentUser, loading}, profileStore: {loadProfile, loadingContacts}} = useStore();
+  const {userStore: {user, loginCurrentUser, loading, uploadPhoto}, profileStore: {loadProfile, loadingContacts}} = useStore();
 
   useEffect(() => {
     if(user === null)
@@ -22,7 +22,7 @@ export default observer(function UserProfilePage() {
     <Segment>
       <Grid>
         <Grid.Row>
-          <UserHeader user={user!} />
+          <UserHeader user={user!} uploadPhoto={uploadPhoto} />
           <Grid.Column width={1}>
             <Button.Group vertical floated='right'>
               <Popup hoverable

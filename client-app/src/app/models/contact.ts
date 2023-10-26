@@ -6,6 +6,8 @@ export interface Contact {
   name: string;
   patronymic: string;
   category?: string;
+  image?: Blob;
+  imageUrl?: string;
 }
 
 export class ContactFormValues {
@@ -55,4 +57,6 @@ export interface ContactDetails {
   description: string;
   contactAddress: ContactAddress | null;
   phones: Phone[] | null;
+  image?: Blob;
+  imageUrl?: string;
 }
