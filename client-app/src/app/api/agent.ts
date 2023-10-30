@@ -107,7 +107,8 @@ const Photos = {
     return axios.post<void>('/photo/user', formData, {
       headers: {'Content-Type': 'multipart/form-data'}
     })
-  }
+  },
+  deleteUserPhoto: () => request.del<void>('/photo/user'),
 }
 
 const agent = {

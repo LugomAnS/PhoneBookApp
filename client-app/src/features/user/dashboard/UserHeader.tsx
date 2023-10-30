@@ -10,13 +10,21 @@ interface Props {
 }
 
 export default observer(function UserHeader({user, uploadPhoto}: Props) {
-  const {modalStore: {openModal}} = useStore();
+  const {modalStore: {openModal}, userStore: {photoUploading, deletePhoto}} = useStore();
   return (
     <Grid.Column width={15} style={{fontSize: '24px'}}>
       <Grid verticalAlign='middle'>
         <Grid.Column width={4}>
           <Image src={user.image || '/src/assets/user.png'} size='small' floated='left' />
-          <Button positive content='Добавить фото' onClick={() => openModal(<PhotoUploadModal uploadPhoto={uploadPhoto} />, 'small')} />
+          <Button.Group vertical>
+            <Button positive content={user.image ? "Заменить фото" : "Добавить фото"}
+              onClick={() => openModal(<PhotoUploadModal uploadPhoto={uploadPhoto} />, 'small')}
+              loading={photoUploading}
+            />
+            <Button negative content="Удалить фото" onClick={() => deletePhoto()}
+              loading={photoUploading} disabled={user.image === undefined}
+            />
+          </Button.Group>
         </Grid.Column>
         <Grid.Column width={3}>
           <p>{"Фамилия: "}</p>

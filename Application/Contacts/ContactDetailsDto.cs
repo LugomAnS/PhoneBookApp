@@ -1,4 +1,5 @@
 ﻿using Application.Categories;
+using Application.Photos;
 using Domain;
 
 namespace Application.Contacts
@@ -13,7 +14,7 @@ namespace Application.Contacts
         public string Description { get; set; }
         public Address ContactAddress { get; set; }
         public ICollection<Phone> Phones { get; set; }
-        public string Image { get; set; }
+        public PhotoDto Photo { get; set; }
 
     }
 }

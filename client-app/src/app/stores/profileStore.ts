@@ -17,6 +17,7 @@ export class ProfileStore {
   addingPhone = false;
   addingCategory = false;
   loadingCategory = false;
+  loadingPhoto = false;
 
   constructor() {
     makeAutoObservable(this);

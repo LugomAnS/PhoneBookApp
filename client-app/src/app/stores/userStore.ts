@@ -78,7 +78,18 @@ export default class UserStore {
     try {
       await agent.Photos.uploadUserPhoto(file);
       runInAction(() => this.user!.image = URL.createObjectURL(file));
-      console.log(file.size);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => this.photoUploading = false);
+    }
+  }
+
+  deletePhoto = async () => {
+    this.photoUploading = true;
+    try {
+      await agent.Photos.deleteUserPhoto();
+      runInAction(() => this.user!.image = undefined);
     } catch (error) {
       console.log(error);
     } finally {

@@ -1,4 +1,6 @@
-﻿namespace Application.Contacts
+﻿using Application.Photos;
+
+namespace Application.Contacts
 {
     public class ContactDto
     {
@@ -7,7 +9,7 @@
         public string Name { get; set; }
         public string Patronymic { get; set; }
         public string Category { get; set; }
-        public string Image { get; set; }
+        public PhotoDto Photo { get; set; }
 
     }
 }

@@ -10,20 +10,19 @@ namespace Application.Core
     {
         public MappingProfile()
         {
-            CreateMap<Contact, ContactDto>()
-                .ForMember(d => d.Category, o => o.MapFrom(c => c.Category.Category))
-                .ForMember(d => d.Image, s => s.MapFrom(o => o.Photo.Image));
-
             CreateMap<UserPhoto, PhotoDto>();
+            CreateMap<ContactPhoto, PhotoDto>();
+
+            CreateMap<Contact, ContactDto>()
+                .ForMember(d => d.Category, o => o.MapFrom(s => s.Category.Category))
+                .ForMember(d => d.Photo, o => o.MapFrom(s => s.Photo));
 
             CreateMap<AppUser, UserProfileDto>()
                 .ForMember(d => d.Photo, o => o.MapFrom(s => s.UserPhoto));
 
             CreateMap<Contact, ContactDetailsDto>()
-                .ForMember(d => d.Category, o => o.MapFrom(c => c.Category.Category))
-                .ForMember(d => d.Image, s => s.MapFrom(o => o.Photo.Image)); 
-
-            
+                .ForMember(d => d.Category, o => o.MapFrom(s => s.Category.Category))
+                .ForMember(d => d.Photo, o => o.MapFrom(s => s.Photo));
 
             CreateMap<Contact, Contact>();
 
