@@ -46,7 +46,6 @@ namespace Application.Contacts
                 {
                     var category = await _dataContext.Categories.FindAsync(request.Contact.Category.Id);
                     request.Contact.Category = category;
-                   
                 }
 
                 _dataContext.Contacts.Add(request.Contact);

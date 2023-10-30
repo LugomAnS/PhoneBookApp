@@ -4,6 +4,7 @@ import agent from "../api/agent";
 import { v4 as uuid} from 'uuid';
 import { ContactCategory } from "../models/contactCategory";
 import { router } from "../router/router";
+import { store } from "./store";
 
 export class ProfileStore {
   contacts = new Map<string, Contact>();
@@ -92,6 +93,7 @@ export class ProfileStore {
       runInAction(() => {
         result.contacts.forEach(contact => this.setContact(contact));
         result.categories.forEach(category => this.setContactCategory(category));
+        store.userStore.user!.image = `data:${result.photo.contentType};base64,${result.photo.image}`;
       })
     } catch (error) {
       console.log(error);

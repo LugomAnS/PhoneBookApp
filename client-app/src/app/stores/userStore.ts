@@ -7,6 +7,7 @@ import { router } from "../router/router";
 export default class UserStore {
   user: User | null = null;
   loading = false;
+  photoUploading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -72,8 +73,16 @@ export default class UserStore {
     router.navigate('/');
   }
 
-  uploadPhoto = (file: Blob) => {
-    this.user!.image = file;
-    this.user!.imageUrl = URL.createObjectURL(this.user!.image);
+  uploadPhoto = async (file: Blob) => {
+    this.photoUploading = true;
+    try {
+      await agent.Photos.uploadUserPhoto(file);
+      runInAction(() => this.user!.image = URL.createObjectURL(file));
+      console.log(file.size);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => this.photoUploading = false);
+    }
   }
 }

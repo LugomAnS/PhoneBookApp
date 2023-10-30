@@ -100,12 +100,23 @@ const Categories = {
   deleteCategory: (id: string) => request.del<void>(`/contactcategory/${id}`)
 }
 
+const Photos = {
+  uploadUserPhoto: (file: Blob) => {
+    const formData = new FormData();
+    formData.append('File', file);
+    return axios.post<void>('/photo/user', formData, {
+      headers: {'Content-Type': 'multipart/form-data'}
+    })
+  }
+}
+
 const agent = {
   Account,
   Profile,
   Contacts,
   Phones,
-  Categories
+  Categories,
+  Photos
 }
 
 export default agent;

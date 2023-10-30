@@ -13,5 +13,7 @@ namespace Application.Contacts
         public string Description { get; set; }
         public Address ContactAddress { get; set; }
         public ICollection<Phone> Phones { get; set; }
+        public string Image { get; set; }
+
     }
 }

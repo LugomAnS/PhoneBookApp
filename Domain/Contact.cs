@@ -11,6 +11,7 @@
         public string Description { get; set; }
         public Address ContactAddress { get; set; }
         public ICollection<Phone> Phones { get; set; }
+        public ContactPhoto Photo { get; set; }
 
         public AppUser Owner { get; set; }
     }

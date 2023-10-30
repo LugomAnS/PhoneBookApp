@@ -15,7 +15,7 @@ export default observer(function UserHeader({user, uploadPhoto}: Props) {
     <Grid.Column width={15} style={{fontSize: '24px'}}>
       <Grid verticalAlign='middle'>
         <Grid.Column width={4}>
-          <Image src={user.imageUrl || '/src/assets/user.png'} size='small' floated='left' />
+          <Image src={user.image || '/src/assets/user.png'} size='small' floated='left' />
           <Button positive content='Добавить фото' onClick={() => openModal(<PhotoUploadModal uploadPhoto={uploadPhoto} />, 'small')} />
         </Grid.Column>
         <Grid.Column width={3}>

@@ -9,7 +9,7 @@ namespace Domain
         public string Patronymic { get; set; }
         public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
         public ICollection<ContactCategory> Categories { get; set; }
-
+        public UserPhoto UserPhoto { get; set; }
 
     }
 }
