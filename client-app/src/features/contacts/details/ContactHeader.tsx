@@ -9,13 +9,20 @@ interface Props {
 }
 
 export default observer(function ContactHeader({contact}: Props) {
-  const {profileStore: {uploadContactPhoto}, modalStore: {openModal}} = useStore();
+  const {profileStore: {uploadContactPhoto, deleteContactPhoto, loadingPhoto}, modalStore: {openModal}} = useStore();
   return (
     <Grid.Column width={15} style={{fontSize: '24px'}}>
       <Grid verticalAlign='middle'>
         <Grid.Column width={4}>
-          <Image src={contact?.imageUrl || '/src/assets/user.png'} size='small' floated='left' />
-          <Button content='Добавить фото' onClick={() => openModal(<PhotoUploadModal uploadPhoto={uploadContactPhoto}/>, 'small')} />
+          <Image src={contact?.image || '/src/assets/user.png'} size='small' floated='left' />
+          <Button.Group vertical>
+            <Button positive content='Добавить фото' onClick={() => openModal(<PhotoUploadModal uploadPhoto={uploadContactPhoto}/>, 'small')}
+              loading={loadingPhoto}
+            />
+            <Button negative content="Удалить фото" onClick={() => deleteContactPhoto()}
+              loading={loadingPhoto} disabled={contact!.image === undefined}
+            />
+          </Button.Group>
         </Grid.Column>
         <Grid.Column width={3}>
           <p>{"Фамилия: "}</p>

@@ -26,7 +26,8 @@ namespace Application.Photos
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var contact = await _dataContext.Contacts.Include(p => p.Photo)
-                    .FirstOrDefaultAsync(c => c.Id == request.ContactId);
+                    .Where(c => c.Id == request.ContactId)
+                    .FirstOrDefaultAsync();
 
                 if (contact == null)
                     return null;

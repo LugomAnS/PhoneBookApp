@@ -39,10 +39,9 @@ namespace Persistence
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Contact>()
-                .HasOne(c => c.Photo)
-                .WithOne(p => p.Owner)
-                .HasForeignKey<ContactPhoto>(p => p.Id)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(p => p.Photo)
+                .WithOne(a => a.Owner)
+                .HasForeignKey<ContactPhoto>(p => p.Id);
 
             builder.Entity<ContactCategory>()
                 .HasOne(c => c.CategoryOwner)

@@ -109,6 +109,14 @@ const Photos = {
     })
   },
   deleteUserPhoto: () => request.del<void>('/photo/user'),
+  uploadContactPhoto: (id: string, file: Blob) => {
+    const formData = new FormData();
+    formData.append('File', file);
+    return axios.post<void>(`/photo/contact/${id}`, formData, {
+      headers: {'Content-Type': 'multipart/form-data'}
+    })
+  },
+  deleteContactPhoto: (id: string) => request.del<void>(`/photo/contact/${id}`),
 }
 
 const agent = {

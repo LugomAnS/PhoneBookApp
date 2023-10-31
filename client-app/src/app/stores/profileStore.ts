@@ -70,6 +70,7 @@ export class ProfileStore {
       listItem.surname = contact.surname;
       listItem.patronymic = contact.patronymic;
       listItem.category = contact.category;
+      listItem.image = contact.image;
 
       this.contacts.set(listItem.id, listItem);
     }
@@ -92,7 +93,11 @@ export class ProfileStore {
     try {
       const result = await agent.Profile.getProfile();
       runInAction(() => {
-        result.contacts.forEach(contact => this.setContact(contact));
+        result.contacts.forEach(contact => {
+          if(contact.photo)
+            contact.image = `data:${contact.photo.contentType};base64,${contact.photo.image}`;
+          this.setContact(contact)
+        });
         result.categories.forEach(category => this.setContactCategory(category));
         store.userStore.user!.image = `data:${result.photo.contentType};base64,${result.photo.image}`;
       })
@@ -108,7 +113,9 @@ export class ProfileStore {
     try {
       const details = await agent.Contacts.getContactDetails(id);
       runInAction(() => {
-        this.selectedContact = details;
+        if(details.photo)
+          details.image = `data:${details.photo.contentType};base64,${details.photo.image}`;
+        this.setSelectedContact(details);
       })
     } catch (error) {
       console.log(error);
@@ -264,12 +271,34 @@ export class ProfileStore {
     }
   }
 
-  uploadContactPhoto = (file: Blob) => {
-    this.selectedContact!.image = file;
-    this.selectedContact!.imageUrl = URL.createObjectURL(file);
-    const contact = this.contacts.get(this.selectedContact!.id);
-    if(contact) {
-      contact.imageUrl = this.selectedContact!.imageUrl;
+  uploadContactPhoto = async (file: Blob) => {
+    this.loadingPhoto = true;
+    try {
+      await agent.Photos.uploadContactPhoto(this.selectedContact!.id, file);
+      runInAction(() => {
+        const image = URL.createObjectURL(file);
+        this.selectedContact!.image = image;
+        this.setContactFromDetails(this.selectedContact!);
+      })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      runInAction(() => this.loadingPhoto = false);
+    }
+  }
+
+  deleteContactPhoto = async () => {
+    this.loadingPhoto = true;
+    try {
+      await agent.Photos.deleteContactPhoto(this.selectedContact!.id);
+      runInAction(() => {
+        this.selectedContact!.image = undefined;
+        this.setContactFromDetails(this.selectedContact!);
+      })
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => this.loadingPhoto = false);
     }
   }
 

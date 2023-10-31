@@ -18,13 +18,14 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new UserPhotoDelete.Command()));
         }
 
-        [HttpPost("contact/${id}")]
-        public async Task<ActionResult> AddContactPhoto(Guid id, [FromForm] IFormFile file)
+        [HttpPost("contact/{id}")]
+        public async Task<ActionResult> AddContactPhoto(Guid id, [FromForm]ContactPhotoCreate.Command command)
         {
-            return HandleResult(await Mediator.Send(new ContactPhotoCreate.Command { ContactId = id, File = file }));
+            command.ContactId = id;
+            return HandleResult(await Mediator.Send(command));
         }
 
-        [HttpDelete("contact/${id}")]
+        [HttpDelete("contact/{id}")]
         public async Task<ActionResult> DeleteContactPhoto(Guid id)
         {
             return HandleResult(await Mediator.Send(new ContactPhotoDelete.Command { ContactId = id }));

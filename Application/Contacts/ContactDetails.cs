@@ -26,7 +26,7 @@ namespace Application.Contacts
             }
             public async Task<Result<ContactDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var contact = await _dataContext.Contacts
+                var contact = await _dataContext.Contacts.Include(p => p.Photo)
                     .Where(c => c.Id == request.Id)
                     .ProjectTo<ContactDetailsDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(CancellationToken.None);

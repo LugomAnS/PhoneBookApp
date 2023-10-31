@@ -1,4 +1,5 @@
 import { ContactCategory } from "./contactCategory";
+import { Photo } from "./photo";
 
 export interface Contact {
   id: string;
@@ -6,8 +7,8 @@ export interface Contact {
   name: string;
   patronymic: string;
   category?: string;
-  image?: Blob;
-  imageUrl?: string;
+  image?: string;
+  photo?: Photo;
 }
 
 export class ContactFormValues {
@@ -57,6 +58,6 @@ export interface ContactDetails {
   description: string;
   contactAddress: ContactAddress | null;
   phones: Phone[] | null;
-  image?: Blob;
-  imageUrl?: string;
+  image?: string;
+  photo?: Photo;
 }
