@@ -1,14 +1,16 @@
 import { observer } from "mobx-react-lite";
 import { Button, Grid, Label, Popup, Segment } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import UserHeader from "./UserHeader";
 import { Link } from "react-router-dom";
 import CategoriesList from "../categories/CategoriesList";
+import UserForm from "../form/UserForm";
 
 export default observer(function UserProfilePage() {
   const {userStore: {user, loginCurrentUser, loading, uploadPhoto}, profileStore: {loadProfile, loadingContacts}} = useStore();
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     if(user === null)
@@ -20,6 +22,9 @@ export default observer(function UserProfilePage() {
 
   return (
     <Segment>
+      {isEdit ? (
+        <UserForm setIsEdit={setIsEdit} />
+      ) : (
       <Grid>
         <Grid.Row>
           <UserHeader user={user!} uploadPhoto={uploadPhoto} />
@@ -34,7 +39,7 @@ export default observer(function UserProfilePage() {
               <Popup hoverable
               position='left center'
               trigger={
-              <Button icon='edit' size="tiny" positive
+              <Button icon='edit' size="tiny" positive onClick={() => setIsEdit(true)}
               />
               }
               ><p>Редактировать</p></Popup>
@@ -50,6 +55,8 @@ export default observer(function UserProfilePage() {
           </Grid.Column>
         </Grid.Row>
       </Grid>
+      )}
+
     </Segment>
   )
 })

@@ -10,6 +10,7 @@ export class ProfileStore {
   contacts = new Map<string, Contact>();
   categories = new Map<string, ContactCategory>();
   contactFilter: string | null = null;
+  isInitialLoad = false;
   loadingContacts = false;
   selectedContact: ContactDetails | null = null;
   loadingDetails = false;
@@ -49,6 +50,10 @@ export class ProfileStore {
 
   get categoriesList () {
     return Array.from(this.categories.values());
+  }
+
+  setInitialLoad = () => {
+    this.isInitialLoad = true;
   }
 
   setContactFilter = (value: string | null) => {
@@ -104,7 +109,7 @@ export class ProfileStore {
     } catch (error) {
       console.log(error);
     } finally {
-      runInAction(() => this.loadingContacts = false)
+      runInAction(() => this.loadingContacts = false )
     }
   }
 
@@ -305,5 +310,6 @@ export class ProfileStore {
   resetStore = () => {
     this.contacts.clear();
     this.contactFilter = null;
+    this.isInitialLoad = false;
   }
 }

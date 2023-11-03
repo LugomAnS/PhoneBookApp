@@ -47,8 +47,6 @@ export default function ContactForm() {
     }
   }
 
-  console.log(contactsCategoryOptions);
-
   return (
     <Formik
       enableReinitialize

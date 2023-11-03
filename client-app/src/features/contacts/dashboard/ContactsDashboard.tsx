@@ -8,14 +8,15 @@ import { Link, Outlet } from "react-router-dom";
 
 export default observer(function ContactsDashboard() {
   const {profileStore} = useStore();
-  const {loadProfile, loadingContacts, contacts, setContactFilter, filteredList} = profileStore;
+  const {loadProfile ,isInitialLoad, setInitialLoad, contacts, setContactFilter, filteredList} = profileStore;
 
   useEffect(() => {
-    loadProfile();
-  }, [loadProfile])
+    if(!isInitialLoad)
+      loadProfile().then(() => setInitialLoad());
+  }, [isInitialLoad, loadProfile, setInitialLoad])
 
 
-  if(loadingContacts) return <LoadingComponent content="Загрузка контактов" />
+  if(!isInitialLoad) return <LoadingComponent content="Загрузка контактов" />
 
   return(
     <Segment style={{borderRadius: '15px'}}>

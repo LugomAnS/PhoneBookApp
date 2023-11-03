@@ -1,10 +1,11 @@
 import axios, {AxiosError, AxiosResponse} from "axios";
-import { User, UserForm } from "../models/user";
+import { User, UserEditForm, UserForm } from "../models/user";
 import { store } from "../stores/store";
 import { ServerErrorMessage } from "../models/errorMessage";
 import { UserProfile } from "../models/userProfile";
 import { ContactDetails, ContactFormValues, Phone } from "../models/contact";
 import { ContactCategory } from "../models/contactCategory";
+
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -15,6 +16,7 @@ const sleep = (delay: number) => {
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
 axios.interceptors.request.use(config => {
+  store.commonStore.setServerErrors(null);
   const token = store.commonStore.token;
   if(token)
     config.headers.Authorization = `Bearer ${token}`;
@@ -52,6 +54,7 @@ axios.interceptors.response.use(async responce => {
         }
       }
       if(stateErrors.length > 0) {
+        store.commonStore.setServerErrors(stateErrors);
         throw stateErrors;
       }
       break;
@@ -119,13 +122,18 @@ const Photos = {
   deleteContactPhoto: (id: string) => request.del<void>(`/photo/contact/${id}`),
 }
 
+const UserEdit = {
+  updateUser: (user: UserEditForm) => request.put<void>('/user', user),
+}
+
 const agent = {
   Account,
   Profile,
   Contacts,
   Phones,
   Categories,
-  Photos
+  Photos,
+  UserEdit,
 }
 
 export default agent;

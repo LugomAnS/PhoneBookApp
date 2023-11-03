@@ -15,3 +15,9 @@ export interface UserForm {
   name?: string;
   patronymic?: string;
 }
+
+export interface UserEditForm {
+  surname: string;
+  name: string;
+  patronymic: string;
+}

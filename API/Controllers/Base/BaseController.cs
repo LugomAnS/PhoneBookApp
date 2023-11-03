@@ -19,12 +19,20 @@ namespace API.Controllers.Base
                 return NotFound();
             }
 
+            if (!result.IsSuccess)
+            {
+                ModelState.AddModelError("ServerError", result.Error);
+                return ValidationProblem();
+            }
+
             return result.IsSuccess switch
             {
                 true when result.Value == null => NotFound(),
                 true when result.Value != null => Ok(result.Value),
-                _ => BadRequest(result.Error)
+                _ =>  BadRequest(result.Error)
             };
+
+           
         }
     }
 }

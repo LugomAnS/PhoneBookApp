@@ -28,6 +28,11 @@ namespace Application.Core
 
             CreateMap<Phone, Phone>();
 
+            CreateMap<UserEditDto, AppUser>()
+                .ForMember(d => d.Surname, o => o.MapFrom(s => s.Surname))
+                .ForMember(d => d.Name, o => o.MapFrom(s => s.Name))
+                .ForMember(d => d.Patronymic, o => o.MapFrom(s => s.Patronymic));
+
             CreateMap<ContactCategory, CategoryDto>();
             CreateMap<CategoryDto, ContactCategory>();
         }

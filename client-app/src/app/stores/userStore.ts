@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { User, UserForm } from "../models/user";
+import { User, UserEditForm, UserForm } from "../models/user";
 import agent from "../api/agent";
 import { store } from "./store";
 import { router } from "../router/router";
@@ -8,6 +8,7 @@ export default class UserStore {
   user: User | null = null;
   loading = false;
   photoUploading = false;
+  userEditLoading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -94,6 +95,23 @@ export default class UserStore {
       console.log(error);
     } finally {
       runInAction(() => this.photoUploading = false);
+    }
+  }
+
+  updateUser = async (user: UserEditForm) => {
+    this.userEditLoading = true;
+    try {
+      await agent.UserEdit.updateUser(user);
+      runInAction(() => {
+        this.user!.surname = user.surname;
+        this.user!.name = user.name;
+        this.user!.patronymic = user.patronymic;
+      })
+    } catch (error) {
+      console.log(error);
+      throw(error);
+    } finally {
+      runInAction(() => this.userEditLoading = false)
     }
   }
 }
