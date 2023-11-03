@@ -18,7 +18,7 @@ export default observer(function RegistryForm() {
     name: Yup.string(),
     patronymic: Yup.string(),
     password: Yup.string().min(6).matches(passwordSchema, 'Пароль не достаточно сложный').required("Введите пароль"),
-    confirmPassword: Yup.string().oneOf([Yup.ref('password'), undefined], 'Пароли должны совпадать').required('Поторите ввод пароля')
+    confirmPassword: Yup.string().oneOf([Yup.ref('password'), undefined], 'Пароли должны совпадать').required('Повторите ввод пароля')
   })
   return (
     <Formik
@@ -42,8 +42,8 @@ export default observer(function RegistryForm() {
           <InputField name='email' placeholder="Электронная почта" label="Электронная почта" />
           <InputField name='username' placeholder="Имя учетной записи" label="Имя учетной записи" />
           <InputField name='surname' placeholder="Фамилия" label="Фамилия" />
-          <InputField name='name' placeholder="Имя" label="Имя" />
-          <InputField name='patronymic' placeholder="Отчетсво" label="Отчество" />
+          <InputField name='name' placeholder="Имя" label="Имя (необязательно)" />
+          <InputField name='patronymic' placeholder="Отчество" label="Отчество (необязательно)" />
           <InputField name='password' placeholder="Пароль" label="Пароль" type="password"/>
           <InputField name='confirmPassword' placeholder="Подтверждение пароля" label="Подтверждение пароля" type="password"/>
 

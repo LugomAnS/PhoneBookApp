@@ -2,11 +2,11 @@ import { observer } from "mobx-react-lite";
 import { Button, Grid, Label, Popup, Segment } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import { useEffect, useState } from "react";
-import LoadingComponent from "../../../app/layout/LoadingComponent";
 import UserHeader from "./UserHeader";
 import { Link } from "react-router-dom";
 import CategoriesList from "../categories/CategoriesList";
 import UserForm from "../form/UserForm";
+import ProfilePagePlaceholder from "../../placeholders/ProfilePagePlaceholder";
 
 export default observer(function UserProfilePage() {
   const {userStore: {user, loginCurrentUser, loading, uploadPhoto}, profileStore: {loadProfile, loadingContacts}} = useStore();
@@ -18,7 +18,7 @@ export default observer(function UserProfilePage() {
       loadProfile()
   }, [user, loginCurrentUser, loadProfile])
 
-  if(loading || loadingContacts) return <LoadingComponent content="Загрузка профиля пользователя..." />
+  if(loading || loadingContacts) return <ProfilePagePlaceholder />
 
   return (
     <Segment>

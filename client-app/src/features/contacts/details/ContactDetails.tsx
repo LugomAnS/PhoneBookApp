@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button,Grid, Header, Label, Popup, Segment} from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
-import LoadingComponent from "../../../app/layout/LoadingComponent";
 import ContactIndexPage from "./ContactIndexPage";
 import ContactHeader from "./ContactHeader";
 import ContactAddress from "./ContactAddress";
 import ContactPhonesList from "./ContactPhonesList";
 import { router } from "../../../app/router/router";
 import { ServerErrorMessage } from "../../../app/models/errorMessage";
+import ConactDetailsPlaceholder from "../../placeholders/ContactDetailsPlaceholder";
 
 export default observer(function ContactDetails() {
   const {profileStore: {selectedContact, loadContactDetails, loadingDetails, deleteContact, setSelectedContact}} = useStore();
@@ -41,7 +41,7 @@ export default observer(function ContactDetails() {
     setSelectedContact(null);
   }
 
-  if(loadingDetails) return <LoadingComponent content="Загрузка информации о контакте..."/>
+  if(loadingDetails) return <ConactDetailsPlaceholder />
   if(selectedContact == null) return <ContactIndexPage />
 
   return (

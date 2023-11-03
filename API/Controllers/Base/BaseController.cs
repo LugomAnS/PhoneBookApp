@@ -28,6 +28,7 @@ namespace API.Controllers.Base
             return result.IsSuccess switch
             {
                 true when result.Value == null => NotFound(),
+                true when result.Value is Unit => new ObjectResult(result.Value) { StatusCode = StatusCodes.Status201Created },
                 true when result.Value != null => Ok(result.Value),
                 _ =>  BadRequest(result.Error)
             };

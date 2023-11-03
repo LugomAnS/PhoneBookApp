@@ -5,6 +5,7 @@ import { ServerErrorMessage } from "../models/errorMessage";
 import { UserProfile } from "../models/userProfile";
 import { ContactDetails, ContactFormValues, Phone } from "../models/contact";
 import { ContactCategory } from "../models/contactCategory";
+import { toast } from "react-toastify";
 
 
 const sleep = (delay: number) => {
@@ -26,6 +27,9 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(async responce => {
   await sleep(1000);
+  if(responce.status === 201)
+    toast.success("Данные сохранены");
+
   return responce;
 }, (error: AxiosError) =>{
   const { data, status, config} = error.response as AxiosResponse;

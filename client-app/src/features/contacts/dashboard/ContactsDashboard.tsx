@@ -2,9 +2,9 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../../app/stores/store";
 import { Button, Divider, Grid, Header, List, Search, Segment } from "semantic-ui-react";
 import { useEffect } from "react";
-import LoadingComponent from "../../../app/layout/LoadingComponent";
 import ContactListItem from "./ContactListItem";
 import { Link, Outlet } from "react-router-dom";
+import ContactsDashboardPlaceholder from "../../placeholders/ContactsDashboardPlaceholder";
 
 export default observer(function ContactsDashboard() {
   const {profileStore} = useStore();
@@ -16,7 +16,7 @@ export default observer(function ContactsDashboard() {
   }, [isInitialLoad, loadProfile, setInitialLoad])
 
 
-  if(!isInitialLoad) return <LoadingComponent content="Загрузка контактов" />
+  if(!isInitialLoad) return <ContactsDashboardPlaceholder />
 
   return(
     <Segment style={{borderRadius: '15px'}}>
