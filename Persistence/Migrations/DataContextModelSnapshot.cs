@@ -17,6 +17,28 @@ namespace Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
 
+            modelBuilder.Entity("Domain.Address", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Flat")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("House")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Venue")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Addresses");
+                });
+
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -78,6 +100,9 @@ namespace Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("UserPhotoId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -87,7 +112,117 @@ namespace Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
+                    b.HasIndex("UserPhotoId")
+                        .IsUnique();
+
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Contact", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Patronymic")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Surname")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Contacts");
+                });
+
+            modelBuilder.Entity("Domain.ContactCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CategoryOwnerId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryOwnerId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Domain.ContactPhoto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ContentType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("BLOB");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContactsPhotos");
+                });
+
+            modelBuilder.Entity("Domain.Phone", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("OwnerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Phones");
+                });
+
+            modelBuilder.Entity("Domain.UserPhoto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ContentType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("BLOB");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserPhotos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -218,6 +353,72 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Address", b =>
+                {
+                    b.HasOne("Domain.Contact", "Owner")
+                        .WithOne("ContactAddress")
+                        .HasForeignKey("Domain.Address", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Domain.AppUser", b =>
+                {
+                    b.HasOne("Domain.UserPhoto", "UserPhoto")
+                        .WithOne("Owner")
+                        .HasForeignKey("Domain.AppUser", "UserPhotoId");
+
+                    b.Navigation("UserPhoto");
+                });
+
+            modelBuilder.Entity("Domain.Contact", b =>
+                {
+                    b.HasOne("Domain.ContactCategory", "Category")
+                        .WithMany("Contacts")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Domain.AppUser", "Owner")
+                        .WithMany("Contacts")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Domain.ContactCategory", b =>
+                {
+                    b.HasOne("Domain.AppUser", "CategoryOwner")
+                        .WithMany("Categories")
+                        .HasForeignKey("CategoryOwnerId");
+
+                    b.Navigation("CategoryOwner");
+                });
+
+            modelBuilder.Entity("Domain.ContactPhoto", b =>
+                {
+                    b.HasOne("Domain.Contact", "Owner")
+                        .WithOne("Photo")
+                        .HasForeignKey("Domain.ContactPhoto", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Domain.Phone", b =>
+                {
+                    b.HasOne("Domain.Contact", "Owner")
+                        .WithMany("Phones")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -267,6 +468,32 @@ namespace Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.AppUser", b =>
+                {
+                    b.Navigation("Categories");
+
+                    b.Navigation("Contacts");
+                });
+
+            modelBuilder.Entity("Domain.Contact", b =>
+                {
+                    b.Navigation("ContactAddress");
+
+                    b.Navigation("Phones");
+
+                    b.Navigation("Photo");
+                });
+
+            modelBuilder.Entity("Domain.ContactCategory", b =>
+                {
+                    b.Navigation("Contacts");
+                });
+
+            modelBuilder.Entity("Domain.UserPhoto", b =>
+                {
+                    b.Navigation("Owner");
                 });
 #pragma warning restore 612, 618
         }
