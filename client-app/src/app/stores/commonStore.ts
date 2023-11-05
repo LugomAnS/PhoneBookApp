@@ -1,11 +1,12 @@
 import { makeAutoObservable, reaction } from "mobx";
-import { ServerErrorMessage } from "../models/errorMessage";
+import { ExceptionError, ServerErrorMessage } from "../models/errorMessage";
 import { toast } from "react-toastify";
 
 export default class CommonStore {
   token: string | null | undefined = localStorage.getItem('phonebook-jwt');
   appLoaded = false;
   errors: ServerErrorMessage[] | null = null;
+  exceptionError: ExceptionError | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -44,5 +45,9 @@ export default class CommonStore {
     } else {
       this.errors = null;
     }
+  }
+
+  setExceptionError = (value: ExceptionError) => {
+    this.exceptionError = value;
   }
 }

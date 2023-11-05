@@ -8,6 +8,7 @@ import ContactDetails from "../../features/contacts/details/ContactDetails";
 import ContactIndexPage from "../../features/contacts/details/ContactIndexPage";
 import ContactForm from "../../features/contacts/form/ContactForm";
 import UserProfilePage from "../../features/user/dashboard/UserProfilePage";
+import ExceptionError from "../../features/errors/ExceptionError";
 
 export const routes: RouteObject[] = [
   {
@@ -23,14 +24,15 @@ export const routes: RouteObject[] = [
               { index: true, element: <ContactIndexPage />},
               { path: ':id', element: <ContactDetails />},
               { path: 'create', element: <ContactForm key='create'/>},
-              { path: ':id/edit', element: <ContactForm key='edit'/>}
+              { path: ':id/edit', element: <ContactForm key='edit'/>},
             ]
           },
-          { path: 'profile', element: <UserProfilePage />}
+          { path: 'profile', element: <UserProfilePage />},
+          { path: '*', element: <Navigate to='not-found'/>},
         ]
       },
       { path: 'not-found', element: <NotFound />},
-      { path: '*', element: <Navigate to='not-found'/>}
+      { path: 'server-error', element: <ExceptionError />}
     ],
   },
 ]

@@ -6,6 +6,7 @@ import { UserProfile } from "../models/userProfile";
 import { ContactDetails, ContactFormValues, Phone } from "../models/contact";
 import { ContactCategory } from "../models/contactCategory";
 import { toast } from "react-toastify";
+import { router } from "../router/router";
 
 
 const sleep = (delay: number) => {
@@ -61,6 +62,10 @@ axios.interceptors.response.use(async responce => {
         store.commonStore.setServerErrors(stateErrors);
         throw stateErrors;
       }
+      break;
+    case 500:
+      store.commonStore.setExceptionError(data);
+      router.navigate('/server-error');
       break;
     default:
       break;

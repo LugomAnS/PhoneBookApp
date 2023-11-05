@@ -39,7 +39,7 @@ export default observer(function RegistryForm() {
           onSubmit={handleSubmit}
         >
           <Header content='Регистрация' textAlign='center'/>
-          <InputField name='email' placeholder="Электронная почта" label="Электронная почта" />
+          <InputField name='email' placeholder="Электронная почта" label="Электронная почта" autoFocus={true}/>
           <InputField name='username' placeholder="Имя учетной записи" label="Имя учетной записи" />
           <InputField name='surname' placeholder="Фамилия" label="Фамилия" />
           <InputField name='name' placeholder="Имя" label="Имя (необязательно)" />

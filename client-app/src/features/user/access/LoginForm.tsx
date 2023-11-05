@@ -18,7 +18,7 @@ export default observer(function LoginForm(){
           onSubmit={handleSubmit}
         >
           <Header content='Войти в телефонную книгу' textAlign='center'/>
-          <InputField name="email" placeholder='Электронная почта' label="Электронная почта" />
+          <InputField name="email" placeholder='Электронная почта' label="Электронная почта" autoFocus={true}/>
           <InputField
             name="password"
             placeholder='Пароль'

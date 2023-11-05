@@ -4,6 +4,7 @@ import { Form, Label } from "semantic-ui-react";
 interface Props {
   placeholder: string;
   name: string;
+  autoFocus?: boolean
   label?: string;
   type?: string;
 }

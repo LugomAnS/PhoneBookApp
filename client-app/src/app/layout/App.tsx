@@ -14,7 +14,7 @@ export default observer(function App() {
   const {commonStore, userStore} = useStore();
 
   useEffect(() => {
-    if(commonStore.token) {
+    if(commonStore.token && !userStore.isLogedIn) {
       userStore.loginCurrentUser().finally(() => commonStore.setAppLoaded());
     } else {
       commonStore.setAppLoaded();
